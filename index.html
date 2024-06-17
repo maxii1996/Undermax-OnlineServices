@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li onclick="showContent('january')">January Sale (2024)</li>
+                <li onclick="showContent('february')">February Sale (2024)</li>
+                <li onclick="showContent('march')">March Sale (2024)</li>
+                <li onclick="showContent('april')">April Sale (2024)</li>
+                <li onclick="showContent('may')">May Sale (2024)</li>
+                <li onclick="showContent('summer')">Summer Season (2024)</li>
+            </ul>
+        </nav>
+        <main class="content">
+            <div id="january" class="content-section">
+                <h2>January Sale (2024)</h2>
+                <table class="plugin-table" id="january-plugins"></table>
+            </div>
+            <div id="february" class="content-section">
+                <h2>February Sale (2024)</h2>
+                <table class="plugin-table" id="february-plugins"></table>
+            </div>
+            <div id="march" class="content-section">
+                <h2>March Sale (2024)</h2>
+                <table class="plugin-table" id="march-plugins"></table>
+            </div>
+            <div id="april" class="content-section">
+                <h2>April Sale (2024)</h2>
+                <table class="plugin-table" id="april-plugins"></table>
+            </div>
+            <div id="may" class="content-section">
+                <h2>May Sale (2024)</h2>
+                <table class="plugin-table" id="may-plugins"></table>
+            </div>
+            <div id="summer" class="content-section">
+                <h2>Summer Season (2024)</h2>
+                <table class="plugin-table" id="summer-plugins"></table>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
