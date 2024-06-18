@@ -1,6 +1,7 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9e5;
+    font-size: 0.95em;
 }
 
 .undermax-title {
@@ -74,7 +75,7 @@ body {
 
 #searchBox {
     flex-grow: 1;
-    width: 55%;
+    width: 85%;
     border-radius: 6px;
 }
 
@@ -86,4 +87,9 @@ body {
 .server-status {
     white-space: nowrap;
     margin-left: 10px;
+    padding-top: 10px;
+    font-size: 13px;
+    font-weight: 500;
+
 }
+
