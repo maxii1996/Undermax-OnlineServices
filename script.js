@@ -1,118 +1,134 @@
-const pluginData = {
-    "january": [
-        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image',
-        'Stop Bar Minigame', 'OnlineTextMZ', 'DurabilityMZ', 'Command Console',
-        'Dynamic Switches', 'Crafting Table', 'Items Search Filtering', 'Conditional Party',
-        'SYNCRO', 'ItemDex', 'Video with Subtitles', 'Mistery Gift', 'Music Media Player',
-        'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System',
-        'Multi Clothes', 'Restrictor', 'Game Version Checker'
-    ],
-    "february": [
-        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image',
-        'Stop Bar Minigame', 'OnlineTextMZ', 'DurabilityMZ', 'Command Console',
-        'Dynamic Switches', 'Crafting Table', 'Items Search Filtering', 'Conditional Party',
-        'SYNCRO', 'ItemDex', 'Video with Subtitles', 'Mistery Gift', 'Music Media Player',
-        'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System',
-        'Multi Clothes', 'Restrictor', 'Game Version Checker', 'Pressing Minigame', 'Dynamic Online Shop'
-    ],
-    "march": [
-        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image',
-        'Stop Bar Minigame', 'OnlineTextMZ', 'DurabilityMZ', 'Command Console',
-        'Dynamic Switches', 'Crafting Table', 'Items Search Filtering', 'Conditional Party',
-        'SYNCRO', 'ItemDex', 'Video with Subtitles', 'Mistery Gift', 'Music Media Player',
-        'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System',
-        'Multi Clothes', 'Restrictor', 'Game Version Checker', 'Pressing Minigame',
-        'Dynamic Online Shop', 'Expeditions', 'Itchio Link', 'Gacha Minigame'
-    ],
-    "april": [
-        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image',
-        'Stop Bar Minigame', 'OnlineTextMZ', 'DurabilityMZ', 'Command Console',
-        'Dynamic Switches', 'Crafting Table', 'Items Search Filtering', 'Conditional Party',
-        'SYNCRO', 'ItemDex', 'Video with Subtitles', 'Mistery Gift', 'Music Media Player',
-        'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System',
-        'Multi Clothes', 'Restrictor', 'Game Version Checker', 'Pressing Minigame',
-        'Dynamic Online Shop', 'Expeditions', 'Itchio Link', 'Gacha Minigame', 'Basic Downloader'
-    ],
-    "may": [
-        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image',
-        'Stop Bar Minigame', 'OnlineTextMZ', 'DurabilityMZ', 'Command Console',
-        'Dynamic Switches', 'Crafting Table', 'Items Search Filtering', 'Conditional Party',
-        'SYNCRO', 'ItemDex', 'Video with Subtitles', 'Mistery Gift', 'Music Media Player',
-        'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System',
-        'Multi Clothes', 'Restrictor', 'Game Version Checker', 'Pressing Minigame',
-        'Dynamic Online Shop', 'Expeditions', 'Itchio Link', 'Gacha Minigame',
-        'Basic Downloader', 'Sequence Minigame', 'Character Fears'
-    ],
-};
+document.addEventListener('DOMContentLoaded', function() {
+    const allPlugins = new Map();
+    let filteredPlugins = [];
 
-const baseUrl = "https://undermax.itch.io/";
+    const categories = {
+        "january": [
+            'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image', 'StopBar Minigame',
+            'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table',
+            'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)',
+            'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window',
+            'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker'
+        ],
+        "february": ['Pressing Minigame', 'Dynamic Online Shop'],
+        "march": ['Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame'],
+        "april": ['Basic Downloader'],
+        "may": ['Sequence Minigame', 'Character Fears']
+    };
 
-async function fetchPageContent(url) {
-    const response = await fetch(url);
-    const data = await response.text();
-    const parser = new DOMParser();
-    return parser.parseFromString(data, 'text/html');
-}
+    const accumulateCategories = {
+        "january2024": categories.january,
+        "february2024": [...categories.january, ...categories.february],
+        "march2024": [...categories.january, ...categories.february, ...categories.march],
+        "april2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april],
+        "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
+        "summer2024": [
+            ...categories.january, ...categories.february, ...categories.march, 
+            ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame'
+        ]
+    };
 
-async function generatePluginList(month, plugins) {
-    const listElement = document.getElementById(`${month}-plugins`);
-    if (listElement) {
-        listElement.innerHTML = `<tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-        </tr>`;
+    fetchItchIoData();
 
-        const doc = await fetchPageContent(baseUrl);
-        plugins.forEach(plugin => {
-            const pluginSlug = plugin.replace(/\s+/g, '-').toLowerCase();
-            const pluginElement = [...doc.querySelectorAll('.game_cell')].find(el => 
-                el.querySelector('.game_title').innerText.trim().toLowerCase().includes(plugin.toLowerCase())
-            );
-
-            if (pluginElement) {
-                const image = pluginElement.querySelector('img').src;
-                const name = pluginElement.querySelector('.game_title a').innerText;
-                const description = pluginElement.querySelector('.game_text').innerText;
-                const price = pluginElement.querySelector('.price_value').innerText || 'Free';
-
-                const listItem = document.createElement('tr');
-                listItem.innerHTML = `
-                    <td><img src="${image}" alt="${name}"></td>
-                    <td><a href="${baseUrl}${pluginSlug}" target="_blank">${name}</a></td>
-                    <td>${description}</td>
-                    <td>${price}</td>
-                `;
-                listElement.appendChild(listItem);
-            } else {
-                console.error(`Plugin ${plugin} not found.`);
-            }
+    window.showContent = function(sectionId) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.toggle('active', section.id === sectionId);
         });
-    } else {
-        console.error(`Element with id ${month}-plugins not found.`);
+    };
+
+    function fetchItchIoData() {
+        const proxies = [
+            { url: 'https://cors-anywhere.herokuapp.com/https://undermax.itch.io/', name: 'Server 1' },
+            { url: 'https://corsproxy.io/?' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 2' },
+            { url: 'https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 3' }
+        ];
+
+        (function tryFetch(proxyIndex = 0) {
+            if (proxyIndex >= proxies.length) {
+                document.getElementById('serverStatus').textContent = 'Offline Server';
+                return;
+            }
+
+            fetch(proxies[proxyIndex].url)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                document.getElementById('serverStatus').textContent = `Connected to ${proxies[proxyIndex].name} successfully`;
+                return response.text();
+            })
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, "text/html");
+                const gameCells = doc.querySelectorAll('[data-game_id]');
+
+                gameCells.forEach(game => {
+                    const gameID = game.getAttribute('data-game_id');
+                    if (!allPlugins.has(gameID)) {
+                        const gameTitleElement = game.querySelector('.game_title a');
+                        const gameTitle = gameTitleElement ? gameTitleElement.textContent : '';
+                        if (/^RPG\s*MAKER\s*MZ\s*Plugin:/i.test(gameTitle)) {
+                            const gameImageElement = game.querySelector('.game_thumb img');
+                            const gameImage = gameImageElement ? (gameImageElement.src || gameImageElement.getAttribute('data-lazy_src')) : '';
+                            const gameLink = gameTitleElement ? gameTitleElement.href : '#';
+                            const gameDescriptionElement = game.querySelector('.game_text');
+                            const gameDescription = gameDescriptionElement ? gameDescriptionElement.textContent : 'No description available';
+
+                            allPlugins.set(gameID, {
+                                image: gameImage,
+                                title: gameTitle,
+                                link: gameLink,
+                                description: gameDescription
+                            });
+                        }
+                    }
+                });
+
+                filteredPlugins = Array.from(allPlugins.values()).sort((a, b) => a.title.localeCompare(b.title));
+                updateDashboard(filteredPlugins);
+            })
+            .catch(() => tryFetch(proxyIndex + 1));
+        })();
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    Object.keys(pluginData).forEach(month => {
-        generatePluginList(month.toLowerCase(), pluginData[month]);
-    });
+    function normalize(str) {
+        return str.replace(/^RPG\s*MAKER\s*MZ\s*Plugin:\s*/i, '').trim().toLowerCase().replace(/\s+/g, ' ');
+    }
 
-    // Show the first section by default
-    showContent('january');
+    window.filterPlugins = function() {
+        const searchValue = document.getElementById('searchBox').value.toLowerCase();
+        const filterBoxValue = document.getElementById('filterBox').value;
+
+        let plugins = Array.from(allPlugins.values());
+
+        plugins = plugins.filter(plugin => plugin.title.toLowerCase().includes(searchValue));
+
+        if (filterBoxValue !== 'all') {
+            const filterList = accumulateCategories[filterBoxValue].map(normalize) || [];
+            plugins = plugins.filter(plugin => {
+                const cleanTitle = normalize(plugin.title);
+                return filterList.includes(cleanTitle) || filterList.some(name => cleanTitle.includes(name));
+            });
+        }
+
+        filteredPlugins = plugins;
+        updateDashboard(filteredPlugins);
+    }
+
+    window.filterByCategory = function() {
+        filterPlugins();
+    }
+
+    function updateDashboard(plugins) {
+        const tableBody = document.querySelector('#plugins tbody');
+        tableBody.innerHTML = '';
+        plugins.forEach(plugin => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><img src="${plugin.image}" alt="${plugin.title}"></td>
+                <td><a href="${plugin.link}">${plugin.title}</a></td>
+                <td>${plugin.description}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+        document.getElementById('pluginCount').textContent = `${plugins.length} plugins available`;
+    }
 });
-
-function showContent(sectionId) {
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
-
-    const activeSection = document.getElementById(sectionId);
-    if (activeSection) {
-        activeSection.classList.add('active');
-    } else {
-        console.error(`Element with id ${sectionId} not found.`);
-    }
-}

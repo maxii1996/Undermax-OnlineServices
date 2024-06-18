@@ -3,48 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Dashboard</title>
+    <title>Plugins List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="sidebar">
-            <ul>
-                <li onclick="showContent('january')">January Sale (2024)</li>
-                <li onclick="showContent('february')">February Sale (2024)</li>
-                <li onclick="showContent('march')">March Sale (2024)</li>
-                <li onclick="showContent('april')">April Sale (2024)</li>
-                <li onclick="showContent('may')">May Sale (2024)</li>
-                <li onclick="showContent('summer')">Summer Season (2024)</li>
-            </ul>
-        </nav>
-        <main class="content">
-            <div id="january" class="content-section">
-                <h2>January Sale (2024)</h2>
-                <table class="plugin-table" id="january-plugins"></table>
-            </div>
-            <div id="february" class="content-section">
-                <h2>February Sale (2024)</h2>
-                <table class="plugin-table" id="february-plugins"></table>
-            </div>
-            <div id="march" class="content-section">
-                <h2>March Sale (2024)</h2>
-                <table class="plugin-table" id="march-plugins"></table>
-            </div>
-            <div id="april" class="content-section">
-                <h2>April Sale (2024)</h2>
-                <table class="plugin-table" id="april-plugins"></table>
-            </div>
-            <div id="may" class="content-section">
-                <h2>May Sale (2024)</h2>
-                <table class="plugin-table" id="may-plugins"></table>
-            </div>
-            <div id="summer" class="content-section">
-                <h2>Summer Season (2024)</h2>
-                <table class="plugin-table" id="summer-plugins"></table>
-            </div>
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+                <div class="undermax-title">UNDERMAX</div>
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showContent('pluginList')">Plugins List</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div id="pluginList" class="content-section active animate__animated animate__fadeIn">
+                    <h2 class="mt-4">Plugins List</h2>
+                    <div class="d-flex align-items-center">
+                        <div class="form-group mb-0">
+                            <select id="filterBox" class="form-control" onchange="filterByCategory()">
+                                <optgroup label="All plugins">
+                                    <option value="all">All plugins</option>
+                                </optgroup>
+                                <optgroup label="Current Season">
+                                    <option value="summer2024">Seasonal Bundle - Summer 2024</option>
+                                </optgroup>
+                                <optgroup label="Previous Bundles">
+                                    <option value="may2024">May Bundle 2024</option>
+                                    <option value="april2024">April Bundle 2024</option>
+                                    <option value="march2024">March Bundle 2024</option>
+                                    <option value="february2024">February Bundle 2024</option>
+                                    <option value="january2024">January Bundle 2024</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group mb-0 flex-grow-1">
+                            <input type="text" id="searchBox" class="form-control" placeholder="Search plugins..." oninput="filterPlugins()">
+                        </div>
+                        <div id="serverStatus" class="server-status">Connecting to server...</div>
+                    </div>
+                    <div id="pluginCount" class="plugin-count mb-2">Loading plugins...</div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover plugin-table" id="plugins">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Plugin Image</th>
+                                    <th>Plugin Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
