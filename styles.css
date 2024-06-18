@@ -67,14 +67,14 @@ body {
 }
 
 #filterBox {
-    width: 97%;
+    width: 95%;
     margin-right: 10px;
     border-radius: 6px;
 }
 
 #searchBox {
     flex-grow: 1;
-    width: 25%;
+    width: 55%;
     border-radius: 6px;
 }
 
