@@ -20,7 +20,7 @@ body {
     top: 0;
     left: 0;
     padding-top: 20px;
-    width: 220px; /* Aumentar el ancho del menú */
+    width: 220px; 
     background-color: #34495e;
     transition: all 0.3s ease;
 }
@@ -39,7 +39,7 @@ body {
 
 .sidebar .nav-link i {
     margin-right: 10px;
-    font-size: 18px; /* Tamaño de los íconos */
+    font-size: 18px; 
 }
 
 .sidebar .nav-link.active {
@@ -56,8 +56,9 @@ body {
 }
 
 .main-content {
-    margin-left: 220px; /* Ajustar el margen izquierdo para compensar el nuevo ancho del menú */
+    margin-left: 320px; /* Ajustar el margen izquierdo para compensar el nuevo ancho del menú */
     padding: 20px;
+    max-width: 75%;
 }
 
 .content-section {
@@ -68,52 +69,6 @@ body {
     display: block;
 }
 
-.plugin-table {
-    width: 100%;
-}
-
-.plugin-table th, .plugin-table td {
-    text-align: left;
-}
-
-.plugin-table th {
-    background-color: #2c3e50;
-    color: white;
-}
-
-.plugin-table td img {
-    width: 100px;
-    height: auto;
-}
-
-#searchBox, #filterBox {
-    margin-bottom: 20px;
-}
-
-#filterBox {
-    width: 95%;
-    margin-right: 10px;
-    border-radius: 6px;
-}
-
-#searchBox {
-    flex-grow: 1;
-    width: 98%;
-    border-radius: 6px;
-}
-
-.plugin-count, .server-status {
-    font-size: 16px;
-    color: #333;
-}
-
-.server-status {
-    white-space: nowrap;
-    margin-left: 10px;
-    padding-top: 10px;
-    font-size: 13px;
-    font-weight: 500;
-}
 
 /* Soporte */
 .support-text {
@@ -160,6 +115,7 @@ body {
     margin-right: 10px;
 }
 
+
 .return-to-itchio {
     text-align: center;
     margin-bottom: 20px;
@@ -193,43 +149,4 @@ body {
 
 .return-to-itchio i {
     margin-right: 8px;
-}
-
-#availabilityContainer {
-    display: none;
-    align-items: center;
-}
-
-#spinner {
-    margin-right: 1em;
-}
-
-#bundleButtonContainer .btn {
-    font-size: 1.2em;
-    padding: 0.8em;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    width: 18%;
-    margin-top: 1em;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-#bundleButtonContainer .btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.plugin-count {
-    font-weight: bold;
-}
-
-.server-status {
-    font-size: 0.9em;
-    margin-right: 2rem;
-    color: #007bff;
 }

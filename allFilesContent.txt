@@ -1,0 +1,623 @@
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\index.html
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plugins List</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar bg-dark" id="sidebar-menu">
+                <!-- Aquí se cargará el menú -->
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div id="pluginList" class="content-section active animate__animated animate__fadeIn">
+                    <h2 class="mt-4">Plugins List</h2>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="form-group mb-0">
+                            <select id="filterBox" class="form-control" onchange="filterByCategory()">
+                                <optgroup label="All plugins">
+                                    <option value="all">All plugins</option>
+                                </optgroup>
+                                <optgroup label="Current Season">
+                                    <option value="summer2024">Seasonal Bundle - Summer 2024</option>
+                                </optgroup>
+                                <optgroup label="Previous Bundles">
+                                    <option value="may2024">May Bundle 2024</option>
+                                    <option value="april2024">April Bundle 2024</option>
+                                    <option value="march2024">March Bundle 2024</option>
+                                    <option value="february2024">February Bundle 2024</option>
+                                    <option value="january2024">January Bundle 2024</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group mb-0 flex-grow-1 ml-2">
+                            <input type="text" id="searchBox" class="form-control" placeholder="Search plugins..." oninput="filterPlugins()">
+                        </div>
+                    </div>
+                    <div id="availabilityContainer" class="mb-3">
+                        <div id="spinner" class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Checking Availability...</span>
+                        </div>
+                        <div id="availabilityMessage" class="ml-2"></div>
+                    </div>
+                    <div id="bundleButtonContainer" class="mb-3"></div> <!-- Contenedor del botón -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div id="pluginCount" class="plugin-count">Loading plugins...</div>
+                        <div id="serverStatus" class="server-status text-right ml-auto">Connecting to server...</div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover plugin-table" id="plugins">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Plugin Image</th>
+                                    <th>Plugin Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script>
+        // Cargar el menú desde menu.html
+        fetch('partials/menu.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-menu').innerHTML = data;
+            });
+    </script>
+</body>
+</html>
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\js\modules\fetchItchIoData.js
+
+// js/modules/fetchItchIoData.js
+
+import { updateDashboard } from './updateDashboard.js';
+import { categories, accumulateCategories } from './pluginCategories.js';
+
+export const allPlugins = new Map();
+export let filteredPlugins = [];
+
+export function fetchItchIoData() {
+    const proxies = [
+        { url: 'https://cors-anywhere.herokuapp.com/https://undermax.itch.io/', name: 'Server 1' },
+        { url: 'https://corsproxy.io/?' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 2' },
+        { url: 'https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 3' }
+    ];
+
+    (function tryFetch(proxyIndex = 0) {
+        if (proxyIndex >= proxies.length) {
+            const serverStatus = document.getElementById('serverStatus');
+            if (serverStatus) {
+                serverStatus.textContent = 'Offline Server';
+            }
+            return;
+        }
+
+        fetch(proxies[proxyIndex].url)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                const serverStatus = document.getElementById('serverStatus');
+                if (serverStatus) {
+                    serverStatus.textContent = `Connected to Undermax ${proxies[proxyIndex].name} successfully`;
+                }
+                return response.text();
+            })
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, "text/html");
+                const gameCells = doc.querySelectorAll('[data-game_id]');
+
+                gameCells.forEach(game => {
+                    const gameID = game.getAttribute('data-game_id');
+                    if (!allPlugins.has(gameID)) {
+                        const gameTitleElement = game.querySelector('.game_title a');
+                        const gameTitle = gameTitleElement ? gameTitleElement.textContent : '';
+                        if (/^RPG\s*MAKER\s*MZ\s*Plugin:/i.test(gameTitle)) {
+                            const gameImageElement = game.querySelector('.game_thumb img');
+                            const gameImage = gameImageElement ? (gameImageElement.src || gameImageElement.getAttribute('data-lazy_src')) : '';
+                            const gameLink = gameTitleElement ? gameTitleElement.href : '#';
+                            const gameDescriptionElement = game.querySelector('.game_text');
+                            const gameDescription = gameDescriptionElement ? gameDescriptionElement.textContent : 'No description available';
+
+                            allPlugins.set(gameID, {
+                                image: gameImage,
+                                title: gameTitle,
+                                link: gameLink,
+                                description: gameDescription
+                            });
+                        }
+                    }
+                });
+
+                filteredPlugins = Array.from(allPlugins.values()).sort((a, b) => a.title.localeCompare(b.title));
+                updateDashboard(filteredPlugins);
+            })
+            .catch(() => tryFetch(proxyIndex + 1));
+    })();
+}
+
+export { categories, accumulateCategories };
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\js\modules\filterPlugins.js
+
+// js/modules/filterPlugins.js
+
+import { accumulateCategories, allPlugins } from './fetchItchIoData.js';
+import { updateDashboard } from './updateDashboard.js';
+
+function normalize(str) {
+    return str.replace(/^RPG\s*MAKER\s*MZ\s*Plugin:\s*/i, '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+export function filterPlugins() {
+    const searchValue = document.getElementById('searchBox').value.toLowerCase();
+    const filterBoxValue = document.getElementById('filterBox').value;
+
+    let plugins = Array.from(allPlugins.values());
+
+    plugins = plugins.filter(plugin => plugin.title.toLowerCase().includes(searchValue));
+
+    if (filterBoxValue !== 'all') {
+        const filterList = accumulateCategories[filterBoxValue].map(normalize) || [];
+        plugins = plugins.filter(plugin => {
+            const cleanTitle = normalize(plugin.title);
+            return filterList.includes(cleanTitle) || filterList.some(name => cleanTitle.includes(name));
+        });
+    }
+
+    updateDashboard(plugins);
+}
+
+export function filterByCategory() {
+    filterPlugins();
+}
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\js\modules\menuHighlight.js
+
+// js/modules/menuHighlight.js
+
+export function highlightActiveMenu() {
+    const path = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href').split('/').pop();
+        if (path === href) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+export function loadMenuAndHighlight() {
+
+    const menuPath = window.location.pathname.includes('undermax') ? '../partials/menu.html' : 'partials/menu.html';
+    
+    fetch(menuPath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-menu').innerHTML = data;
+            highlightActiveMenu();
+        })
+        .catch(err => console.error('Failed to load menu:', err));
+}
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\js\modules\pluginCategories.js
+
+// js/modules/pluginCategories.js
+
+export const categories = {
+    "january": [
+        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image', 'StopBar Minigame',
+        'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table',
+        'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)',
+        'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window',
+        'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker'
+    ],
+    "february": ['Pressing Minigame', 'Dynamic Online Shop'],
+    "march": ['Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame'],
+    "april": ['Basic Downloader'],
+    "may": ['Sequence Minigame', 'Character Fears']
+};
+
+export const accumulateCategories = {
+    "january2024": categories.january,
+    "february2024": [...categories.january, ...categories.february],
+    "march2024": [...categories.january, ...categories.february, ...categories.march],
+    "april2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april],
+    "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
+    "summer2024": [
+        ...categories.january, ...categories.february, ...categories.march, 
+        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame'
+    ]
+};
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\js\modules\updateDashboard.js
+
+// js/modules/updateDashboard.js
+
+export function updateDashboard(plugins) {
+    const tableBody = document.querySelector('#plugins tbody');
+    tableBody.innerHTML = '';
+    plugins.forEach(plugin => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><img src="${plugin.image}" alt="${plugin.title}"></td>
+            <td><a href="${plugin.link}">${plugin.title}</a></td>
+            <td>${plugin.description}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+    document.getElementById('pluginCount').textContent = `${plugins.length} plugins available`;
+}
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\js\script.js
+
+// js/script.js
+
+import { fetchItchIoData } from './modules/fetchItchIoData.js';
+import { filterPlugins, filterByCategory } from './modules/filterPlugins.js';
+import { loadMenuAndHighlight, highlightActiveMenu } from './modules/menuHighlight.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetchItchIoData();
+    loadMenuAndHighlight();
+
+    window.filterPlugins = filterPlugins;
+    window.filterByCategory = filterByCategory;
+    window.highlightActiveMenu = highlightActiveMenu; 
+    window.showContent = function(sectionId) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.toggle('active', section.id === sectionId);
+        });
+    };
+
+    document.getElementById('filterBox').addEventListener('change', function() {
+        const selectedValue = this.value;
+        const availabilityContainer = document.getElementById('availabilityContainer');
+        const bundleButtonContainer = document.getElementById('bundleButtonContainer');
+        const availabilityMessage = document.getElementById('availabilityMessage');
+        const spinner = document.getElementById('spinner');
+
+        availabilityContainer.style.display = 'flex';
+        spinner.style.display = 'block';
+        availabilityMessage.textContent = 'Checking Availability...';
+        bundleButtonContainer.innerHTML = '';
+
+        if (selectedValue === 'summer2024') {
+            // Simulate availability check
+            setTimeout(() => {
+                const currentDate = new Date();
+                const endDate = new Date('2024-09-22');
+
+                if (currentDate <= endDate) {
+                    availabilityMessage.innerHTML = `<span style="color: green;">Bundle currently available!</span> <span style="color: black;">(Available until Sunday, September 22, 2024)</span>`;
+                    bundleButtonContainer.innerHTML = `
+                        <a href="https://undermax.itch.io/summer-bundle-2024" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
+                            <i class="fas fa-gift"></i> Get This Bundle
+                        </a>
+                    `;
+                } else {
+                    availabilityMessage.innerHTML = `<span style="color: red;">Bundle no longer available</span>`;
+                    bundleButtonContainer.innerHTML = '';
+                }
+                spinner.style.display = 'none';
+            }, 570); // Simulate a delay for the check
+        } else {
+            availabilityMessage.textContent = '';
+            spinner.style.display = 'none';
+        }
+    });
+});
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\partials\menu.html
+
+<div class="return-to-itchio">
+    <a href="https://undermax.itch.io/" target="_self">
+        <i class="fas fa-arrow-left"></i> Return to Itchio
+    </a>
+</div>
+<div class="undermax-title">UNDERMAX</div>
+<div class="sidebar-sticky">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="/index.html">
+                <i class="fas fa-list"></i> Plugins List
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/undermax/LicenceTerms.html">
+                <i class="fas fa-file-contract"></i> License Terms
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/undermax/support.html">
+                <i class="fas fa-life-ring"></i> Support
+            </a> 
+        </li>
+    </ul>
+</div>
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\undermax\LicenceTerms.html
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>License Terms and Conditions | Undermax Games</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="../css/terms.css">
+    </head>
+    
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar bg-dark" id="sidebar-menu">
+                <!-- Aquí se cargará el menú -->
+            </nav>
+            <main role="main" class="col-md-10 col-lg-10 px-md-4 main-content">
+                <div class="content-section active animate__animated animate__fadeIn">
+                    <h2 class="mt-4">License Terms and Conditions</h2>
+                    <div class="terms-text">
+                        <p class="last-update"><strong>Last Update:</strong> June 2024 | Undermax / Maxii1996</p>
+
+                        <h3>Acquisition and Types of Plugins</h3>
+                        <p>The plugins developed by "Undermax / Maxii1996" available on this platform are classified into two categories:</p>
+                        <ul>
+                            <li><strong>DEMO Plugins:</strong> These plugins are available for use or download without any payment. Users must credit "Undermax", "Undermax Games", or "Maxii1996" (at their discretion) in the credits of the project where the plugin is used.</li>
+                            <li><strong>FULL Plugins:</strong> These plugins require payment for use or download. Attribution is optional but can be given to "Undermax", "Undermax Games", or "Maxii1996" in the project's acknowledgements for the creation of the plugin.</li>
+                        </ul>
+
+                        <h3>Reuse and Distribution of Plugins</h3>
+                        <p>It is strictly prohibited to share FULL plugins with other users, or to publish them on the internet or other platforms. Reselling the plugins in any form is also forbidden. Modifications to plugins are allowed as long as the original author is credited, and the main functionality of the plugin is not altered. An individual who acquires a FULL plugin may reuse it in any of their personal projects. In group projects, all associated users must be credited.</p>
+
+                        <h3>Authorized Distribution Platform</h3>
+                        <p>All plugins will be hosted and managed through the Itch.io platform at <a href="https://undermax.itch.io/" target="_blank">https://undermax.itch.io/</a>. This is the only authorized method for downloading and distributing the plugins. Users are responsible for managing their accounts and the content they acquire, including their access credentials. Undermax | Maxii1996 is not liable for any misuse of the platform or account access.</p>
+
+                        <h3>Plugin Support and Compatibility</h3>
+                        <p>All plugins are developed under the "Vanilla" category, meaning compatibility with other plugins, especially those from different authors, cannot be guaranteed. While Undermax / Maxii1996 strives to maintain compatibility as much as possible, there may be situations where a plugin is incompatible with another. Users are encouraged to post detailed comments explaining any issues they encounter. Responses will be provided to clarify whether an adaptation of the plugin is possible. Updates will be made if necessary. Proper operation is only guaranteed with RPG MAKER MZ in its factory state, without any other installed plugins that modify its functionality.</p>
+
+                        <h3>Bundles and Promotions</h3>
+                        <p>Promotions, discounts, and bundles are managed by Undermax / Maxii1996 through the Itch.io platform, using the tools, features, and functionalities provided by the platform.</p>
+                        <ul>
+                            <li><strong>Seasonal Bundles:</strong> These bundles replace the previous Monthly Bundles and are available for purchase during the specified season. They offer users the opportunity to access all plugins developed up to that point, as well as any new plugins released during the bundle's period. The price for the current season's bundle will remain fixed throughout its validity period. Users can download updated plugins from the bundle's purchase page if any updates occur during the bundle period.</li>
+                            <li><strong>Numbered Bundles:</strong> These bundles contain five plugins at a special price, lower than the individual price of each plugin. They are released every time five plugins are published chronologically, meaning a new bundle becomes available over time as the set of five plugins is completed.</li>
+                        </ul>
+
+                        <h3>Acceptance of Terms</h3>
+                        <p>By downloading and acquiring our plugins, users agree to these terms and conditions. It is important to read and understand this document fully before making a purchase or using our products. Use of Undermax / Maxii1996's plugins signifies acceptance of these terms and a willingness to abide by them.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="module" src="../js/script.js"></script>
+    <script>
+        // Cargar el menú desde menu.html y resaltar el menú activo
+        fetch('../partials/menu.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-menu').innerHTML = data;
+                highlightActiveMenu(); // Llama a la función globalmente
+            });
+    </script>
+</body>
+</html>
+
+
+----------------------------------------
+
+File: C:\Users\maxin\OneDrive\Undermax-OnlineServicesGit\Undermax-OnlineServices\undermax\support.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support | Undermax Games</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../css/support.css"> 
+  
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar bg-dark" id="sidebar-menu">
+                <!-- Aquí se cargará el menú -->
+            </nav>
+            <main role="main" class="col-md-10 col-lg-10 px-md-4 main-content">
+                <div class="content-section active animate__animated animate__fadeIn">
+                    <h2 class="mt-4"><i class="fas fa-life-ring"></i> Help Center</h2>
+                    <div class="support-text">
+                        <p class="lead">Do you need support with our plugins?</p>
+                        <p>We know that things don't always go as expected, and Undermax really wants you to have a good experience. That's why we're providing you with a list of tips and advice to see if we can help:</p>
+                        
+                        <div class="accordion" id="supportAccordion">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <i class="fas fa-question-circle"></i> I use RPG MAKER MV, do the plugins work with this version of the program?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        No, Undermax's plugins are designed for RPG MAKER MZ, and are only compatible with that version of the program.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <i class="fas fa-puzzle-piece"></i> I'm interested in one of the Undermax plugins, but I also use plugins from other authors in my project. What can I do?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        We know there are a lot of plugin creators for RPG MAKER MZ, and that's why each of them has their own way of doing things, so compatibility between plugins can't always be guaranteed. We recommend that before purchasing a plugin, consult and inform yourself about the compatibility between them. Undermax works under RPG MAKER MZ: "Vanilla" this means, on RPG MAKER MZ without modifications or additional plugins installed. (As it comes from the factory) ensuring that its plugins work correctly with the base engine of the program.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <i class="fas fa-tools"></i> I've already purchased a FULL plugin from Undermax, and when I install it in my personal project, it doesn't work correctly. What should I do?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        We recommend that you first make sure you are using it correctly, review the documentation or watch the video associated with the plugin. After making sure of this, check the debug console (F12) and see if there is an error or notice when you run the plugin. If none of this helps, we recommend contacting Undermax to see what could be happening.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            <i class="fas fa-lightbulb"></i> I would like to request an additional feature or function for an existing plugin, is that possible?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        If the feature you need is mainly related to the plugin and does not modify its main functionality, you can request such functionality in the comment area of the desired plugin. Undermax will try to inform you whether that feature can be incorporated or not, and if so, will let you know the timeframe in which it can be done.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFive">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                            <i class="fas fa-user-tie"></i> I'm looking for a programmer for my personal project, does Undermax take on commissioned work?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        Generally, Undermax does not work on direct commissions, as he prefers to dedicate time to plugins for the community. However, you can try requesting a plugin in a message, and you will be informed whether it is possible to do it or not.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingSix">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                            <i class="fas fa-comment-dots"></i> Can I suggest a future plugin to be developed for the community?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        Certainly, however, keep in mind that systems that significantly modify the RPG MAKER MZ will not be undertaken; it must always be an "add-on" to the already existing main systems. This means that plugins like the following will not be made:
+                                        <ul>
+                                            <li>Battle systems.</li>
+                                            <li>Complex systems or those requiring the replacement of several main functions of the program.</li>
+                                            <li>Interface designers (e.g., "HUD MAKER").</li>
+                                            <li>External programs to RPG MAKER MZ.</li>
+                                            <li>Among others.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingSeven">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                            <i class="fas fa-list"></i> Can I see which plugins each Monthly Bundle / Seasonal Bundle includes?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#supportAccordion">
+                                    <div class="card-body">
+                                        Yes, we have updated the system and now it is much easier to see! You can do it from the <a href="../index.html">"Plugin List"</a> page. Use the Filter to choose which Bundle you want to view, and all the plugins corresponding to that bundle will be filtered and included.
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+
+                        <h3 class="mt-4"><i class="fas fa-envelope-open-text"></i> Contact Methods</h3>
+                        <div class="contact-methods">
+                            <h4><i class="fas fa-comments"></i> Through comments on the plugin post</h4>
+                            <p>Communication is crucial to solving problems, and maybe your problem could be someone else's, which is why we suggest posting a comment on Itch.io explaining the problem. Undermax will respond as soon as possible and will try to give you a solution or an answer to your message. We encourage users to use the comment area of the Itch.io platform, so if another user has a similar problem, they can find the solution right there.</p>
+
+                            <h4><i class="fas fa-paper-plane"></i> By direct contact</h4>
+                            <p>We have enabled a contact form that will allow you to contact Undermax if you need to on a more private matter. We recommend using the comment area on the corresponding plugin, but if your question or problem has sensitive information, then you can use this form to contact Undermax and thus have more direct communication. (Note: Misuse of this form, such as spam or repeated submissions of the same request, could affect the status of your account on Itch.io. We recommend using it only when you really see it necessary).</p>
+                            <p><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAcIdKClUMFQyVVozVTNLNVo0WDM3TVc4TFg1S09DMy4u" class="btn btn-primary" target="_blank"><i class="fas fa-envelope"></i> Contact Us</a></p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="module" src="../js/script.js"></script>
+    <script>
+        // Cargar el menú desde menu.html y resaltar el menú activo
+        fetch('../partials/menu.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-menu').innerHTML = data;
+                highlightActiveMenu(); // Llama a la función globalmente
+            });
+    </script>
+</body>
+</html>
+
+
+----------------------------------------
+

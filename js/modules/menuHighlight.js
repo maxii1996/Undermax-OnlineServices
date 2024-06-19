@@ -11,3 +11,16 @@ export function highlightActiveMenu() {
         }
     });
 }
+
+export function loadMenuAndHighlight() {
+
+    const menuPath = window.location.pathname.includes('undermax') ? '../partials/menu.html' : 'partials/menu.html';
+    
+    fetch(menuPath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-menu').innerHTML = data;
+            highlightActiveMenu();
+        })
+        .catch(err => console.error('Failed to load menu:', err));
+}

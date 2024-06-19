@@ -15,14 +15,20 @@ export function fetchItchIoData() {
 
     (function tryFetch(proxyIndex = 0) {
         if (proxyIndex >= proxies.length) {
-            document.getElementById('serverStatus').textContent = 'Offline Server';
+            const serverStatus = document.getElementById('serverStatus');
+            if (serverStatus) {
+                serverStatus.textContent = 'Offline Server';
+            }
             return;
         }
 
         fetch(proxies[proxyIndex].url)
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
-                document.getElementById('serverStatus').textContent = `Connected to ${proxies[proxyIndex].name} successfully`;
+                const serverStatus = document.getElementById('serverStatus');
+                if (serverStatus) {
+                    serverStatus.textContent = `Connected to Undermax ${proxies[proxyIndex].name} successfully`;
+                }
                 return response.text();
             })
             .then(data => {
