@@ -1,0 +1,97 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9e5;
+    font-size: 0.95em;
+}
+
+.undermax-title {
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #4f536ba6;
+}
+
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    width: 200px;
+    background-color: #34495e;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link {
+    color: white;
+    font-size: 16px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    background-color: #404850b9;
+    padding-left: 30px;
+    border-left: 4px solid transparent;
+}
+
+.sidebar .nav-link.active {
+    background-color: #626e7ab4;
+    color: #ffffff;
+    border-left: 4px solid #0acad8;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgb(71, 102, 121);
+    color: #40c7f0;
+    text-decoration: none;
+    padding-left: 40px;
+}
+
+.main-content {
+    margin-left: 200px;
+    padding: 20px;
+}
+
+/* Styles for License Terms Page */
+.terms-text {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.terms-text h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.terms-text ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.terms-text ul li {
+    margin-bottom: 10px;
+}
+
+.terms-text p, .terms-text ul li {
+    color: #333;
+}
+
+.terms-text a {
+    color: rgb(7, 47, 122);
+    text-decoration: none;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+.last-update {
+    margin-bottom: 20px;
+    font-style: italic;
+}

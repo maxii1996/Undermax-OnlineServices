@@ -8,9 +8,9 @@ body {
     color: white;
     text-align: center;
     padding: 20px 0;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: bold;
-
+    background-color: #4b506ba6;
 }
 
 .sidebar {
@@ -19,21 +19,36 @@ body {
     top: 0;
     left: 0;
     padding-top: 20px;
-    width: auto;
-    min-width: 200px;
+    width: 200px;
+    background-color: #34495e;
+    transition: all 0.3s ease;
 }
 
 .sidebar .nav-link {
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     padding: 15px;
     transition: all 0.3s ease;
-    background-color: #34495e;
+    background-color: #404850b9;
     padding-left: 30px;
+    border-left: 4px solid transparent;
+}
+
+.sidebar .nav-link.active {
+    background-color: #626e7ab4;
+    color: #ffffff; 
+    border-left: 4px solid #0acad8; 
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgb(71, 102, 121);
+    color: #40c7f0; 
+    text-decoration: none;
+    padding-left: 40px; 
 }
 
 .main-content {
-    margin-left: auto;
+    margin-left: 200px;
     padding: 20px;
 }
 
@@ -90,6 +105,5 @@ body {
     padding-top: 10px;
     font-size: 13px;
     font-weight: 500;
-
 }
 
