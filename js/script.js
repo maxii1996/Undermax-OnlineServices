@@ -1,3 +1,5 @@
+// js/script.js
+
 import { fetchItchIoData } from './modules/fetchItchIoData.js';
 import { filterPlugins, filterByCategory } from './modules/filterPlugins.js';
 import { loadMenuAndHighlight, highlightActiveMenu } from './modules/menuHighlight.js';

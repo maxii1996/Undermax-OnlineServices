@@ -1,3 +1,4 @@
+// js/modules/menuHighlight.js
 
 export function highlightActiveMenu() {
     const path = window.location.pathname.split('/').pop();
@@ -12,7 +13,9 @@ export function highlightActiveMenu() {
 }
 
 export function loadMenuAndHighlight() {
-    const menuPath = '../partials/menu.html';
+
+    const menuPath = window.location.pathname.includes('undermax') ? '../partials/menu.html' : 'partials/menu.html';
+    
     fetch(menuPath)
         .then(response => response.text())
         .then(data => {
