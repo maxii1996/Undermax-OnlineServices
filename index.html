@@ -74,7 +74,7 @@
     <script type="module" src="js/script.js"></script>
     <script>
         // Cargar el menú desde menu.html
-        fetch('/Undermax-OnlineServices/partials/menu.html')
+        fetch('partials/menu.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('sidebar-menu').innerHTML = data;
