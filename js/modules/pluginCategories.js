@@ -6,12 +6,32 @@ export const categories = {
         'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table',
         'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)',
         'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window',
-        'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker'
+        'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker',
+        'Pressing Minigame', 'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 
+        'Basic Downloader', 'Sequence Minigame', 'Character Fears'
     ],
     "february": ['Pressing Minigame', 'Dynamic Online Shop'],
     "march": ['Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame'],
     "april": ['Basic Downloader'],
-    "may": ['Sequence Minigame', 'Character Fears']
+    "may": ['Sequence Minigame', 'Character Fears'],
+    "bundle1": [
+        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image', 'StopBar Minigame'
+    ],
+    "bundle2": [
+        'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table'
+    ],
+    "bundle3": [
+        'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)'
+    ],
+    "bundle4": [
+        'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System'
+    ],
+    "bundle5": [
+        'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker', 'Pressing Minigame'
+    ],
+    "bundle6": [
+        'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 'Basic Downloader'
+    ]
 };
 
 export const accumulateCategories = {
@@ -23,5 +43,11 @@ export const accumulateCategories = {
     "summer2024": [
         ...categories.january, ...categories.february, ...categories.march, 
         ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame'
-    ]
+    ],
+    "bundle1": categories.bundle1,
+    "bundle2": categories.bundle2,
+    "bundle3": categories.bundle3,
+    "bundle4": categories.bundle4,
+    "bundle5": categories.bundle5,
+    "bundle6": categories.bundle6
 };
