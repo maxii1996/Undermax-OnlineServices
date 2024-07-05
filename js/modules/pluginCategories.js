@@ -6,9 +6,7 @@ export const categories = {
         'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table',
         'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)',
         'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window',
-        'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker',
-        'Pressing Minigame', 'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 
-        'Basic Downloader', 'Sequence Minigame', 'Character Fears'
+        'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker'
     ],
     "february": ['Pressing Minigame', 'Dynamic Online Shop'],
     "march": ['Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame'],
@@ -31,6 +29,9 @@ export const categories = {
     ],
     "bundle6": [
         'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 'Basic Downloader'
+    ],
+    "bundle7": [
+        'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
     ]
 };
 
@@ -42,12 +43,14 @@ export const accumulateCategories = {
     "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
     "summer2024": [
         ...categories.january, ...categories.february, ...categories.march, 
-        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame'
+        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
     ],
     "bundle1": categories.bundle1,
     "bundle2": categories.bundle2,
     "bundle3": categories.bundle3,
     "bundle4": categories.bundle4,
     "bundle5": categories.bundle5,
-    "bundle6": categories.bundle6
+    "bundle6": categories.bundle6,
+    "bundle7": categories.bundle7
+
 };

@@ -8,10 +8,25 @@ export let filteredPlugins = [];
 
 export function fetchItchIoData() {
     const proxies = [
-        { url: 'https://cors-anywhere.herokuapp.com/https://undermax.itch.io/', name: 'Server 1' },
+        { url: 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 1' },
         { url: 'https://corsproxy.io/?' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 2' },
         { url: 'https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 3' }
     ];
+
+    const skeletonScreen = document.getElementById('skeletonScreen');
+    const pluginTable = document.getElementById('plugins');
+
+    function showSkeletonScreen() {
+        skeletonScreen.style.display = 'grid';
+        pluginTable.style.display = 'none';
+    }
+
+    function hideSkeletonScreen() {
+        skeletonScreen.style.display = 'none';
+        pluginTable.style.display = 'table';
+    }
+
+    showSkeletonScreen();
 
     (function tryFetch(proxyIndex = 0) {
         if (proxyIndex >= proxies.length) {
@@ -19,6 +34,7 @@ export function fetchItchIoData() {
             if (serverStatus) {
                 serverStatus.textContent = 'Offline Server';
             }
+            hideSkeletonScreen();
             return;
         }
 
@@ -29,13 +45,13 @@ export function fetchItchIoData() {
                 if (serverStatus) {
                     serverStatus.textContent = `Connected to Undermax ${proxies[proxyIndex].name} successfully`;
                 }
-                return response.text();
+                return response.json(); // Cambiamos a JSON para allorigins.win
             })
             .then(data => {
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(data, "text/html");
+                const doc = parser.parseFromString(data.contents, "text/html"); // Usamos data.contents para allorigins.win
                 const gameCells = doc.querySelectorAll('[data-game_id]');
-
+                
                 gameCells.forEach(game => {
                     const gameID = game.getAttribute('data-game_id');
                     if (!allPlugins.has(gameID)) {
@@ -60,6 +76,7 @@ export function fetchItchIoData() {
 
                 filteredPlugins = Array.from(allPlugins.values()).sort((a, b) => a.title.localeCompare(b.title));
                 updateDashboard(filteredPlugins);
+                hideSkeletonScreen();
             })
             .catch(() => tryFetch(proxyIndex + 1));
     })();

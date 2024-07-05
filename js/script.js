@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         bundleButtonContainer.innerHTML = '';
 
         if (selectedValue === 'summer2024') {
-            // Simulate availability check
             setTimeout(() => {
                 const currentDate = new Date();
                 const endDate = new Date('2024-09-22');
@@ -47,9 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     bundleButtonContainer.innerHTML = '';
                 }
                 spinner.style.display = 'none';
-            }, 570); // Simulate a delay for the check
+            }, 570);
         } else if (selectedValue.startsWith('bundle')) {
-            // Directly set the availability message for bundles
             setTimeout(() => {
                 availabilityMessage.innerHTML = `<span style="color: green;">Bundle available!</span>`;
                 const bundleLinks = {
@@ -58,7 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     'bundle3': 'https://itch.io/s/111515/plugins-bundle-3',
                     'bundle4': 'https://itch.io/s/111516/plugins-bundle-4',
                     'bundle5': 'https://itch.io/s/115896/plugins-bundle-5',
-                    'bundle6': 'https://itch.io/s/122444/plugins-bundle-6'
+                    'bundle6': 'https://itch.io/s/122444/plugins-bundle-6',
+                    'bundle7': 'https://itch.io/s/128201/plugins-bundle-7' 
+
                 };
                 bundleButtonContainer.innerHTML = `
                     <a href="${bundleLinks[selectedValue]}" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
@@ -66,14 +66,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     </a>
                 `;
                 spinner.style.display = 'none';
-            }, 570); // Simulate a delay for the check
+            }, 570); 
         } else if (['january2024', 'february2024', 'march2024', 'april2024', 'may2024'].includes(selectedValue)) {
             // Set the message for monthly bundles that are no longer available
             setTimeout(() => {
                 availabilityMessage.innerHTML = `<span style="color: orange;">This bundle is no longer available for purchase. If you have already purchased it and need to download it, you can do so from <a href="https://itch.io/my-collections" target="_blank" style="color: orange;">your collection</a>.</span>`;
                 bundleButtonContainer.innerHTML = '';
                 spinner.style.display = 'none';
-            }, 570); // Simulate a delay for the check
+            }, 570); 
         } else {
             availabilityMessage.textContent = '';
             spinner.style.display = 'none';
