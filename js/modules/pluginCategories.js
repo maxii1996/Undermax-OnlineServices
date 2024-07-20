@@ -31,7 +31,7 @@ export const categories = {
         'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 'Basic Downloader'
     ],
     "bundle7": [
-        'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
+        'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle'
     ]
 };
 
@@ -43,7 +43,7 @@ export const accumulateCategories = {
     "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
     "summer2024": [
         ...categories.january, ...categories.february, ...categories.march, 
-        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
+        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle'
     ],
     "bundle1": categories.bundle1,
     "bundle2": categories.bundle2,
@@ -52,5 +52,4 @@ export const accumulateCategories = {
     "bundle5": categories.bundle5,
     "bundle6": categories.bundle6,
     "bundle7": categories.bundle7
-
 };
