@@ -31,7 +31,7 @@ export const categories = {
         'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 'Basic Downloader'
     ],
     "bundle7": [
-        'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle'
+        'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
     ]
 };
 
