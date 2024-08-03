@@ -43,7 +43,8 @@ export const accumulateCategories = {
     "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
     "summer2024": [
         ...categories.january, ...categories.february, ...categories.march, 
-        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle'
+        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle',
+       'Treasure Hunt Minigame' 
     ],
     "bundle1": categories.bundle1,
     "bundle2": categories.bundle2,
