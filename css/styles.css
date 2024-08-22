@@ -3,16 +3,23 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9e5;
     font-size: 0.95em;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
+
+
 .undermax-title {
-    color: white;
+    color: #fff;
     text-align: center;
     padding: 20px 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
-    background-color: #4b506ba6;
+    background-color: #1a1c2c;
+    letter-spacing: 1px;
 }
+
 
 .sidebar {
     height: 100vh;
@@ -20,45 +27,51 @@ body {
     top: 0;
     left: 0;
     padding-top: 20px;
-    width: 220px; /* Aumentar el ancho del menú */
-    background-color: #34495e;
+    width: 240px; /* Ancho ligeramente más grande para un aspecto más moderno */
+    background: linear-gradient(180deg, #1e212b 0%, #15171f 100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
 
+
 .sidebar .nav-link {
-    color: white;
+    color: #ffffff;
     font-size: 16px;
-    padding: 10px 15px;
+    padding: 15px 20px;
     transition: all 0.3s ease;
-    background-color: #404850b9;
-    padding-left: 30px;
+    padding-left: 35px;
     border-left: 4px solid transparent;
     display: flex;
     align-items: center;
+    border-radius: 4px;
 }
 
 .sidebar .nav-link i {
-    margin-right: 10px;
-    font-size: 18px; /* Tamaño de los íconos */
+    margin-right: 15px;
+    font-size: 18px;
+    color: #1ed5a9;
+    transition: color 0.3s ease;
 }
 
 .sidebar .nav-link.active {
-    background-color: #626e7ab4;
-    color: #ffffff; 
-    border-left: 4px solid #0acad8; 
+    background-color: #1ed5a9;
+    color: #000;
+    border-left: 4px solid #1ed5a9; 
 }
 
 .sidebar .nav-link:hover {
-    background-color: rgb(71, 102, 121);
-    color: #40c7f0; 
+    background-color: #2b2f3a;
+    color: #1ed5a9; 
+    padding-left: 45px; 
     text-decoration: none;
-    padding-left: 35px; 
 }
 
 .main-content {
-    margin-left: 220px; /* Ajustar el margen izquierdo para compensar el nuevo ancho del menú */
+    margin-left: 240px; /* Ajustar el margen izquierdo para compensar el nuevo ancho del menú */
     padding: 20px;
 }
+
+
 
 .content-section {
     display: none;
@@ -171,7 +184,7 @@ body {
 }
 
 .return-to-itchio a {
-    color: #fff;
+    color: #1ed5a9;
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -187,12 +200,13 @@ body {
 }
 
 .return-to-itchio:hover {
-    background-color: #45516d;
+    background-color: #141621;
     transform: translateY(-2px);
 }
 
 .return-to-itchio i {
     margin-right: 8px;
+    color: #1ed5a9;
 }
 
 #availabilityContainer {

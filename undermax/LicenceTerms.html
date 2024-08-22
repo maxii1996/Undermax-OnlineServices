@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>License Terms and Conditions | Undermax Games</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link rel="stylesheet" href="../css/terms.css">
-    </head>
-    
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Terms and Conditions | Undermax Games</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../css/terms.css">
+</head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -17,23 +18,38 @@
                 <!-- Aquí se cargará el menú -->
             </nav>
             <main role="main" class="col-md-10 col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-end align-items-center pt-2">
+                    <select id="language-selector" class="custom-select w-auto">
+                        <option value="en" selected>English</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
                 <div class="content-section active animate__animated animate__fadeIn">
                     <h2 class="mt-4">License Terms and Conditions</h2>
-                    <div class="terms-text">
-                        <p class="last-update"><strong>Last Update:</strong> June 2024 | Undermax / Maxii1996</p>
+                    <div class="terms-text" id="terms-en">
+                        <p class="last-update"><strong>Last Update:</strong> August 2024 | Undermax / Maxii1996</p>
+
+                        <h3>Definitions</h3>
+                        <p><strong>Plugin:</strong> Refers to any software or code developed by "Undermax / Maxii1996" available on this platform.</p>
+                        <p><strong>User:</strong> Refers to any individual or entity that downloads, installs, or uses a plugin.</p>
+                        <p><strong>Commercial Project:</strong> A project intended to generate revenue.</p>
+                        <p><strong>Non-Commercial Project:</strong> A project not intended to generate revenue.</p>
 
                         <h3>Acquisition and Types of Plugins</h3>
                         <p>The plugins developed by "Undermax / Maxii1996" available on this platform are classified into two categories:</p>
                         <ul>
-                            <li><strong>DEMO Plugins:</strong> These plugins are available for use or download without any payment. Users must credit "Undermax", "Undermax Games", or "Maxii1996" (at their discretion) in the credits of the project where the plugin is used.</li>
+                            <li><strong>DEMO Plugins:</strong> These plugins are available for use or download without any payment. Users must credit "Undermax", "Undermax Games", or "Maxii1996" (at their discretion) in the credits section of the project where the plugin is used, including but not limited to in-game credits, documentation, or promotional materials.</li>
                             <li><strong>FULL Plugins:</strong> These plugins require payment for use or download. Attribution is optional but can be given to "Undermax", "Undermax Games", or "Maxii1996" in the project's acknowledgements for the creation of the plugin.</li>
                         </ul>
 
                         <h3>Reuse and Distribution of Plugins</h3>
-                        <p>It is strictly prohibited to share FULL plugins with other users, or to publish them on the internet or other platforms. Reselling the plugins in any form is also forbidden. Modifications to plugins are allowed as long as the original author is credited, and the main functionality of the plugin is not altered. An individual who acquires a FULL plugin may reuse it in any of their personal projects. In group projects, all associated users must be credited.</p>
+                        <p>It is strictly prohibited to share FULL plugins with other users, or to publish them on the internet or other platforms. Reselling the plugins in any form is also forbidden. Modifications to plugins are allowed as long as the original author is credited, and the main functionality of the plugin is not altered. Reverse engineering, decompiling, or any other attempts to extract the source code are prohibited. An individual who acquires a FULL plugin may reuse it in any of their personal projects. In group projects, all associated users must be credited.</p>
 
                         <h3>Authorized Distribution Platform</h3>
                         <p>All plugins will be hosted and managed through the Itch.io platform at <a href="https://undermax.itch.io/" target="_blank">https://undermax.itch.io/</a>. This is the only authorized method for downloading and distributing the plugins. Users are responsible for managing their accounts and the content they acquire, including their access credentials. Undermax | Maxii1996 is not liable for any misuse of the platform or account access.</p>
+
+                        <h3>Types of Licenses</h3>
+                        <p>Both "FULL" and "DEMO" plugins developed by "Undermax / Maxii1996" are authorized for use in both commercial and non-commercial projects. This grants users the right to generate revenue through projects that incorporate any of these plugins. It is imperative, however, to carefully review the section on "Reuse and Distribution of Plugins" to ensure compliance with all applicable terms.</p>
 
                         <h3>Plugin Support and Compatibility</h3>
                         <p>All plugins are developed under the "Vanilla" category, meaning compatibility with other plugins, especially those from different authors, cannot be guaranteed. While Undermax / Maxii1996 strives to maintain compatibility as much as possible, there may be situations where a plugin is incompatible with another. Users are encouraged to post detailed comments explaining any issues they encounter. Responses will be provided to clarify whether an adaptation of the plugin is possible. Updates will be made if necessary. Proper operation is only guaranteed with RPG MAKER MZ in its factory state, without any other installed plugins that modify its functionality.</p>
@@ -45,8 +61,59 @@
                             <li><strong>Numbered Bundles:</strong> These bundles contain five plugins at a special price, lower than the individual price of each plugin. They are released every time five plugins are published chronologically, meaning a new bundle becomes available over time as the set of five plugins is completed.</li>
                         </ul>
 
+                        <h3>Disclaimer of Warranty</h3>
+                        <p>All plugins are provided "as is" without warranty of any kind, either express or implied, including but not limited to the implied warranties of merchantability and fitness for a particular purpose. Undermax / Maxii1996 does not guarantee that the plugins will meet your requirements or that their operation will be uninterrupted or error-free.</p>
+
+                        <h3>Limitation of Liability</h3>
+                        <p>In no event shall Undermax / Maxii1996 be liable for any damages, including but not limited to direct, indirect, special, incidental, or consequential damages or losses arising out of the use of or inability to use the plugins, even if Undermax / Maxii1996 has been advised of the possibility of such damages.</p>
+
                         <h3>Acceptance of Terms</h3>
                         <p>By downloading and acquiring our plugins, users agree to these terms and conditions. It is important to read and understand this document fully before making a purchase or using our products. Use of Undermax / Maxii1996's plugins signifies acceptance of these terms and a willingness to abide by them.</p>
+                    </div>
+
+                    <div class="terms-text" id="terms-es" style="display:none;">
+                        <p class="last-update"><strong>Última Actualización:</strong> Agosto 2024 | Undermax / Maxii1996</p>
+
+                        <h3>Definiciones</h3>
+                        <p><strong>Plugin:</strong> Se refiere a cualquier software o código desarrollado por "Undermax / Maxii1996" disponible en esta plataforma.</p>
+                        <p><strong>Usuario:</strong> Se refiere a cualquier individuo o entidad que descargue, instale o utilice un plugin.</p>
+                        <p><strong>Proyecto Comercial:</strong> Un proyecto destinado a generar ingresos.</p>
+                        <p><strong>Proyecto No Comercial:</strong> Un proyecto que no tiene como fin generar ingresos.</p>
+
+                        <h3>Adquisición y Tipos de Plugins</h3>
+                        <p>Los plugins desarrollados por "Undermax / Maxii1996" disponibles en esta plataforma se clasifican en dos categorías:</p>
+                        <ul>
+                            <li><strong>Plugins DEMO:</strong> Estos plugins están disponibles para uso o descarga sin pago alguno. Los usuarios deben acreditar a "Undermax", "Undermax Games" o "Maxii1996" (a su discreción) en la sección de créditos del proyecto donde se utilice el plugin, incluyendo pero no limitándose a los créditos en el juego, documentación o materiales promocionales.</li>
+                            <li><strong>Plugins FULL:</strong> Estos plugins requieren pago para su uso o descarga. La atribución es opcional, pero puede otorgarse a "Undermax", "Undermax Games" o "Maxii1996" en los agradecimientos del proyecto por la creación del plugin.</li>
+                        </ul>
+
+                        <h3>Reutilización y Distribución de Plugins</h3>
+                        <p>Está estrictamente prohibido compartir plugins FULL con otros usuarios o publicarlos en internet u otras plataformas. También está prohibida la reventa de los plugins en cualquier forma. Se permiten modificaciones a los plugins siempre que se acredite al autor original y no se altere la funcionalidad principal del plugin. Se prohíbe la ingeniería inversa, descompilación o cualquier otro intento de extraer el código fuente. Una persona que adquiera un plugin FULL puede reutilizarlo en cualquiera de sus proyectos personales. En proyectos grupales, todos los usuarios asociados deben ser acreditados.</p>
+
+                        <h3>Plataforma de Distribución Autorizada</h3>
+                        <p>Todos los plugins se alojarán y gestionarán a través de la plataforma Itch.io en <a href="https://undermax.itch.io/" target="_blank">https://undermax.itch.io/</a>. Este es el único método autorizado para la descarga y distribución de los plugins. Los usuarios son responsables de gestionar sus cuentas y el contenido que adquieren, incluidas sus credenciales de acceso. Undermax | Maxii1996 no es responsable por cualquier uso indebido de la plataforma o el acceso a las cuentas.</p>
+
+                        <h3>Tipos de Licencias</h3>
+                        <p>Tanto los plugins "FULL" como "DEMO" desarrollados por "Undermax / Maxii1996" están autorizados para su uso en proyectos comerciales y no comerciales. Esto otorga a los usuarios el derecho de generar ingresos a través de proyectos que incorporen cualquiera de estos plugins. Sin embargo, es imperativo revisar cuidadosamente la sección sobre "Reutilización y Distribución de Plugins" para garantizar el cumplimiento de todos los términos aplicables.</p>
+
+                        <h3>Soporte y Compatibilidad de Plugins</h3>
+                        <p>Todos los plugins se desarrollan bajo la categoría "Vanilla", lo que significa que no se puede garantizar la compatibilidad con otros plugins, especialmente aquellos de diferentes autores. Si bien Undermax / Maxii1996 se esfuerza por mantener la compatibilidad en la medida de lo posible, pueden darse situaciones en las que un plugin sea incompatible con otro. Se recomienda a los usuarios que publiquen comentarios detallados explicando cualquier problema que encuentren. Se proporcionarán respuestas para aclarar si es posible una adaptación del plugin. Se realizarán actualizaciones si es necesario. Solo se garantiza el funcionamiento adecuado con RPG MAKER MZ en su estado de fábrica, sin otros plugins instalados que modifiquen su funcionalidad.</p>
+
+                        <h3>Paquetes y Promociones</h3>
+                        <p>Las promociones, descuentos y paquetes son gestionados por Undermax / Maxii1996 a través de la plataforma Itch.io, utilizando las herramientas, características y funcionalidades proporcionadas por la plataforma.</p>
+                        <ul>
+                            <li><strong>Paquetes Estacionales:</strong> Estos paquetes reemplazan a los anteriores Paquetes Mensuales y están disponibles para su compra durante la temporada especificada. Ofrecen a los usuarios la oportunidad de acceder a todos los plugins desarrollados hasta ese momento, así como a cualquier nuevo plugin lanzado durante el periodo del paquete. El precio del paquete de la temporada actual permanecerá fijo durante todo su período de validez. Los usuarios pueden descargar plugins actualizados desde la página de compra del paquete si se realizan actualizaciones durante el periodo del paquete.</li>
+                            <li><strong>Paquetes Numerados:</strong> Estos paquetes contienen cinco plugins a un precio especial, inferior al precio individual de cada plugin. Se lanzan cada vez que se publican cronológicamente cinco plugins, lo que significa que un nuevo paquete estará disponible con el tiempo a medida que se complete el conjunto de cinco plugins.</li>
+                        </ul>
+
+                        <h3>Exención de Garantía</h3>
+                        <p>Todos los plugins se proporcionan "tal cual" sin garantía de ningún tipo, ya sea expresa o implícita, incluyendo pero no limitándose a las garantías implícitas de comerciabilidad e idoneidad para un propósito particular. Undermax / Maxii1996 no garantiza que los plugins cumplirán con sus requisitos o que su funcionamiento será ininterrumpido o libre de errores.</p>
+
+                        <h3>Limitación de Responsabilidad</h3>
+                        <p>En ningún caso Undermax / Maxii1996 será responsable por daños, incluidos pero no limitados a daños directos, indirectos, especiales, incidentales o consecuentes o pérdidas derivadas del uso o la imposibilidad de usar los plugins, incluso si Undermax / Maxii1996 ha sido informado de la posibilidad de tales daños.</p>
+
+                        <h3>Aceptación de los Términos</h3>
+                        <p>Al descargar y adquirir nuestros plugins, los usuarios aceptan estos términos y condiciones. Es importante leer y comprender completamente este documento antes de realizar una compra o utilizar nuestros productos. El uso de los plugins de Undermax / Maxii1996 implica la aceptación de estos términos y la voluntad de cumplir con ellos.</p>
                     </div>
                 </div>
             </main>
@@ -64,6 +131,13 @@
                 document.getElementById('sidebar-menu').innerHTML = data;
                 highlightActiveMenu(); // Llama a la función globalmente
             });
+
+        document.getElementById('language-selector').addEventListener('change', function() {
+            var selectedLanguage = this.value;
+            document.getElementById('terms-en').style.display = selectedLanguage === 'en' ? 'block' : 'none';
+            document.getElementById('terms-es').style.display = selectedLanguage === 'es' ? 'block' : 'none';
+        });
     </script>
 </body>
+
 </html>
