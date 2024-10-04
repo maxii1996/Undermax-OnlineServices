@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../css/support.css"> 
+    <link rel="stylesheet" href="../css/styles.css"> 
   
 </head>
 <body>
@@ -150,12 +150,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="module" src="../js/script.js"></script>
     <script>
-        // Cargar el menú desde menu.html y resaltar el menú activo
         fetch('../partials/menu.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('sidebar-menu').innerHTML = data;
-                highlightActiveMenu(); // Llama a la función globalmente
+                highlightActiveMenu(); 
             });
     </script>
 </body>

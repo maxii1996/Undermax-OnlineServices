@@ -16,21 +16,19 @@
     top: 0;
     left: 0;
     padding-top: 20px;
-    width: 220px; /* Aumentar el ancho del menú */
+    width: 220px;
     background-color: #34495e;
     transition: all 0.3s ease;
 }
 
 .btn-primary{
-    padding: 30px;
-    width: 300px;
+
     transition: all 0.3s ease;
 
 }
 
 .btn-primary:hover{
-   transform: translateX(8px);
-   width: 400px;
+
    transition: all 0.3s ease;
 
 
@@ -160,7 +158,7 @@ h3{
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(90deg, #4678d6a4, #1146a0);
+    background: linear-gradient(90deg, #5db0c9e7, #1146a0);
     color: #e2e8f0;
     font-size: 1rem;
     margin: 10px;
@@ -410,7 +408,6 @@ a:hover{
 
 #bundleButtonContainer .btn:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
 }
 
 .plugin-count {

@@ -8,24 +8,53 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../css/terms.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block sidebar bg-dark" id="sidebar-menu">
-                <!-- Aquí se cargará el menú -->
-            </nav>
-            <main role="main" class="col-md-10 col-lg-10 px-md-4 main-content">
+
+    <!-- Menú superior fijo -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+        <div class="container-fluid">
+            <!-- Botón de regresar a Itch.io -->
+            <a class="navbar-brand return-to-itchio" href="https://itch.io">
+                <i class="fas fa-arrow-left"></i> Return to Itch.io
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Plugins List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="LicenceTerms.html">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="support.html">Support</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container-fluid main-content">
+        <div class="row justify-content-center">
+            <main role="main" class="col-10 px-md-4 plugin-window">
                 <div class="d-flex justify-content-end align-items-center pt-2">
                     <select id="language-selector" class="custom-select w-auto">
                         <option value="en" selected>English</option>
                         <option value="es">Español</option>
                     </select>
                 </div>
+
+                <!-- Sección de términos -->
                 <div class="content-section active animate__animated animate__fadeIn">
                     <h2 class="mt-4">License Terms and Conditions</h2>
+
+                    <!-- Términos en inglés -->
                     <div class="terms-text" id="terms-en">
                         <p class="last-update"><strong>Last Update:</strong> August 2024 | Undermax / Maxii1996</p>
 
@@ -71,6 +100,7 @@
                         <p>By downloading and acquiring our plugins, users agree to these terms and conditions. It is important to read and understand this document fully before making a purchase or using our products. Use of Undermax / Maxii1996's plugins signifies acceptance of these terms and a willingness to abide by them.</p>
                     </div>
 
+                    <!-- Términos en español -->
                     <div class="terms-text" id="terms-es" style="display:none;">
                         <p class="last-update"><strong>Última Actualización:</strong> Agosto 2024 | Undermax / Maxii1996</p>
 
@@ -119,19 +149,13 @@
             </main>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="module" src="../js/script.js"></script>
     <script>
-        // Cargar el menú desde menu.html y resaltar el menú activo
-        fetch('../partials/menu.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('sidebar-menu').innerHTML = data;
-                highlightActiveMenu(); // Llama a la función globalmente
-            });
-
+        // Cambio de idioma
         document.getElementById('language-selector').addEventListener('change', function() {
             var selectedLanguage = this.value;
             document.getElementById('terms-en').style.display = selectedLanguage === 'en' ? 'block' : 'none';
