@@ -140,3 +140,268 @@ body {
 .return-to-itchio i {
     margin-right: 8px;
 }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(90deg, #4678d6a4, #1146a0);
+    color: #e2e8f0;
+    font-size: 1rem;
+    margin: 10px;
+    padding: 2rem;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+.wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: rgba(43, 38, 112, 0.432);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.185);
+    margin-left: auto - 1rem;
+    overflow-y: auto;
+    height: 95vh;
+    box-sizing: border-box;
+}
+
+.undermax-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    background: linear-gradient(145deg, rgba(24, 92, 216, 0.9), rgba(52, 132, 240, 0.9));
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    margin-bottom: 30px;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 240px;
+    padding-top: 20px;
+    background: linear-gradient(145deg, rgba(63, 78, 151, 0.384), rgba(21, 61, 112, 0.8));
+    backdrop-filter: blur(25px);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    overflow-y: auto;
+    border-right: 1px solid rgba(255, 255, 255, 0.127);
+}
+
+.sidebar .nav-link {
+    color: white;
+    font-size: 16px;
+    padding: 15px;
+    margin: 5px 15px;
+    display: flex;
+    align-items: center;
+    background: rgba(6, 130, 255, 0.356);
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.sidebar .nav-link:hover {
+    background: linear-gradient(145deg, rgba(63, 78, 151, 0.384), rgba(52, 132, 240, 0.8));
+    padding-left: 35px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar .nav-link.active {
+    background: linear-gradient(145deg, rgba(130, 147, 183, 0.752), rgba(52, 130, 240, 0.8));
+    border-left: 4px solid #0acad8;
+    padding-left: 35px;
+}
+
+.plugin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: linear-gradient(90deg, rgba(217, 217, 244, 0.703), rgba(152, 176, 240, 0.16));
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    color: rgba(213, 226, 255, 0.738);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.plugin-table th, .plugin-table td {
+    padding: 14px 15px;
+    border-bottom: 1px solid rgba(44, 62, 80, 0.2);
+}
+
+.plugin-table th {
+    background: rgba(52, 73, 94, 0.8);
+    color: white;
+    text-align: left;
+}
+
+a{
+    color:rgba(29, 28, 71, 0.96);
+    transition: all 0.2s ease;
+}
+
+a:hover{
+ color:rgb(211, 224, 245);
+ font-size: 1.05em;
+ transition: all 0.2s ease;
+
+}
+
+.plugin-table td img {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+}
+
+#searchBox, #filterBox {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(63, 78, 151, 0.384), rgba(21, 61, 112, 0.8));
+    border: 3px solid rgba(92, 93, 160, 0.021);
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    height: 3em;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+#filterBox {
+    width: 100%;
+    height: 3em;
+    cursor: pointer;
+    background-color: rgba(18, 47, 100, 0.8);
+    color: #ffffff;
+}
+
+#filterBox:hover {
+    background-color: linear-gradient(145deg, rgba(55, 73, 187, 0.815), rgba(20, 67, 155, 0.832));
+    color: white;
+}
+
+
+#filterBox:focus {
+    background-color: linear-gradient(145deg, rgba(55, 73, 187, 0.815), rgba(20, 67, 155, 0.832));
+    border: 2px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(30, 144, 255, 0.3);
+}
+
+#searchBox {
+    flex-grow: 1;
+    width: 100%;
+    color: white;
+    background-color: linear-gradient(145deg, rgba(55, 73, 187, 0.815), rgba(20, 67, 155, 0.832));
+}
+
+#searchBox:focus {
+    flex-grow: 1;
+    width: 100%;
+  
+    background-color: linear-gradient(145deg, rgba(108, 115, 192, 0.815), rgba(31, 147, 114, 0.832));
+}
+
+.plugin-count, .server-status {
+    font-size: 16px;
+    color: #cbd5e0;
+}
+
+.server-status {
+    margin-left: 10px;
+    padding-top: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.support-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+}
+
+.return-to-itchio {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(145deg, rgba(52, 132, 240, 0.8), rgba(24, 92, 216, 0.8));
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.return-to-itchio a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.return-to-itchio:hover {
+    transform: translateX(-6px);
+    background: linear-gradient(145deg, rgba(52, 132, 240, 0.8), rgba(24, 92, 216, 0.9));
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.return-to-itchio i {
+    margin-right: 8px;
+}
+
+#availabilityContainer {
+    display: none;
+    align-items: center;
+}
+
+#spinner {
+    margin-right: 1em;
+}
+
+#bundleButtonContainer .btn {
+    font-size: 1.2em;
+    padding: 0.8em;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 18%;
+    margin-top: 1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#bundleButtonContainer .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.plugin-count {
+    font-weight: bold;
+}
+
+.server-status {
+    font-size: 0.9em;
+    margin-right: 2rem;
+    color: #0acad8;
+}
