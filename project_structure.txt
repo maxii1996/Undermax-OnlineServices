@@ -1,0 +1,419 @@
+[Folder] css
+[File] exportProject.js
+---- Content Start ----
+const fs = require('fs');
+const path = require('path');
+const readline = require('readline');
+
+// Crear interfaz de lectura para interactuar con el usuario
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const baseDir = 'C:/Users/maxin/OneDrive/Undermax-OnlineServicesGit/Undermax-OnlineServices'; // Cambia la ruta si es necesario
+const outputFile = 'project_structure.txt'; // El archivo de salida
+
+// Función para recorrer los archivos y filtrar por extensión
+function readDirectory(dirPath, extensions, level = 0) {
+    let result = '';
+    const files = fs.readdirSync(dirPath);
+
+    files.forEach(file => {
+        const fullPath = path.join(dirPath, file);
+        const stats = fs.statSync(fullPath);
+
+        // Omitir la carpeta .git y el archivo project_structure.txt
+        if (file === '.git' || file === 'project_structure.txt') {
+            return; // Salta este archivo/carpeta
+        }
+
+        // Indentar los nombres según el nivel de profundidad
+        const indentation = ' '.repeat(level * 4);
+
+        if (stats.isDirectory()) {
+            result += `${indentation}[Folder] ${file}\n`;
+            result += readDirectory(fullPath, extensions, level + 1); // Leer subcarpeta
+        } else {
+            const fileExtension = path.extname(file);
+            if (extensions.includes(fileExtension)) {
+                result += `${indentation}[File] ${file}\n`;
+
+                // Leer el contenido del archivo
+                const fileContent = fs.readFileSync(fullPath, 'utf-8');
+                result += `${indentation}---- Content Start ----\n${indentation}${fileContent}\n${indentation}---- Content End ----\n`;
+            }
+        }
+    });
+
+    return result;
+}
+
+// Función para exportar archivos según la opción seleccionada
+function exportProject(option) {
+    let extensions = [];
+
+    switch (option) {
+        case '1':
+            extensions = ['.html', '.js', '.css']; // Todos los archivos
+            break;
+        case '2':
+            extensions = ['.html']; // Solo HTML
+            break;
+        case '3':
+            extensions = ['.js']; // Solo JS
+            break;
+        case '4':
+            extensions = ['.css']; // Solo CSS
+            break;
+        default:
+            console.log('Opción no válida. Selecciona una opción correcta.');
+            rl.close();
+            return;
+    }
+
+    // Ejecutar la exportación y escribir en un archivo de texto
+    const projectStructure = readDirectory(baseDir, extensions);
+    fs.writeFileSync(outputFile, projectStructure);
+    console.log(`Project structure saved to ${outputFile}`);
+    rl.close();
+}
+
+// Preguntar al usuario qué tipo de archivos desea exportar
+rl.question('Elige una opción para exportar:\n1. Exportar todo\n2. Solo HTML\n3. Solo JS\n4. Solo CSS\nTu elección: ', (option) => {
+    exportProject(option);
+});
+
+---- Content End ----
+[Folder] js
+    [Folder] modules
+        [File] fetchItchIoData.js
+        ---- Content Start ----
+        // js/modules/fetchItchIoData.js
+
+import { updateDashboard } from './updateDashboard.js';
+import { categories, accumulateCategories } from './pluginCategories.js';
+
+export const allPlugins = new Map();
+export let filteredPlugins = [];
+
+export function fetchItchIoData() {
+    const proxies = [
+        { url: 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 1' },
+        { url: 'https://corsproxy.io/?' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 2' },
+        { url: 'https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent('https://undermax.itch.io/'), name: 'Server 3' }
+    ];
+
+    const skeletonScreen = document.getElementById('skeletonScreen');
+    const pluginTable = document.getElementById('plugins');
+
+    function showSkeletonScreen() {
+        skeletonScreen.style.display = 'grid';
+        pluginTable.style.display = 'none';
+    }
+
+    function hideSkeletonScreen() {
+        skeletonScreen.style.display = 'none';
+        pluginTable.style.display = 'table';
+    }
+
+    showSkeletonScreen();
+
+    (function tryFetch(proxyIndex = 0) {
+        if (proxyIndex >= proxies.length) {
+            const serverStatus = document.getElementById('serverStatus');
+            if (serverStatus) {
+                serverStatus.textContent = 'Offline Server';
+            }
+            hideSkeletonScreen();
+            return;
+        }
+
+        fetch(proxies[proxyIndex].url)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                const serverStatus = document.getElementById('serverStatus');
+                if (serverStatus) {
+                    serverStatus.textContent = `Connected to Undermax ${proxies[proxyIndex].name} successfully`;
+                }
+                return response.json(); // Cambiamos a JSON para allorigins.win
+            })
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.contents, "text/html"); // Usamos data.contents para allorigins.win
+                const gameCells = doc.querySelectorAll('[data-game_id]');
+                
+                gameCells.forEach(game => {
+                    const gameID = game.getAttribute('data-game_id');
+                    if (!allPlugins.has(gameID)) {
+                        const gameTitleElement = game.querySelector('.game_title a');
+                        const gameTitle = gameTitleElement ? gameTitleElement.textContent : '';
+                        if (/^RPG\s*MAKER\s*MZ\s*Plugin:/i.test(gameTitle)) {
+                            const gameImageElement = game.querySelector('.game_thumb img');
+                            const gameImage = gameImageElement ? (gameImageElement.src || gameImageElement.getAttribute('data-lazy_src')) : '';
+                            const gameLink = gameTitleElement ? gameTitleElement.href : '#';
+                            const gameDescriptionElement = game.querySelector('.game_text');
+                            const gameDescription = gameDescriptionElement ? gameDescriptionElement.textContent : 'No description available';
+
+                            allPlugins.set(gameID, {
+                                image: gameImage,
+                                title: gameTitle,
+                                link: gameLink,
+                                description: gameDescription
+                            });
+                        }
+                    }
+                });
+
+                filteredPlugins = Array.from(allPlugins.values()).sort((a, b) => a.title.localeCompare(b.title));
+                updateDashboard(filteredPlugins);
+                hideSkeletonScreen();
+            })
+            .catch(() => tryFetch(proxyIndex + 1));
+    })();
+}
+
+export { categories, accumulateCategories };
+
+        ---- Content End ----
+        [File] filterPlugins.js
+        ---- Content Start ----
+        // js/modules/filterPlugins.js
+
+import { accumulateCategories, allPlugins } from './fetchItchIoData.js';
+import { updateDashboard } from './updateDashboard.js';
+
+function normalize(str) {
+    return str.replace(/^RPG\s*MAKER\s*MZ\s*Plugin:\s*/i, '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+export function filterPlugins() {
+    const searchValue = document.getElementById('searchBox').value.toLowerCase();
+    const filterBoxValue = document.getElementById('filterBox').value;
+
+    let plugins = Array.from(allPlugins.values());
+
+    plugins = plugins.filter(plugin => plugin.title.toLowerCase().includes(searchValue));
+
+    if (filterBoxValue !== 'all') {
+        const filterList = accumulateCategories[filterBoxValue].map(normalize) || [];
+        plugins = plugins.filter(plugin => {
+            const cleanTitle = normalize(plugin.title);
+            return filterList.includes(cleanTitle) || filterList.some(name => cleanTitle.includes(name));
+        });
+    }
+
+    updateDashboard(plugins);
+}
+
+export function filterByCategory() {
+    filterPlugins();
+}
+
+        ---- Content End ----
+        [File] menuHighlight.js
+        ---- Content Start ----
+        // js/modules/menuHighlight.js
+
+export function highlightActiveMenu() {
+    const path = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href').split('/').pop();
+        if (path === href) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+export function loadMenuAndHighlight() {
+
+    const menuPath = window.location.pathname.includes('undermax') ? '../partials/menu.html' : 'partials/menu.html';
+    
+    fetch(menuPath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-menu').innerHTML = data;
+            highlightActiveMenu();
+        })
+        .catch(err => console.error('Failed to load menu:', err));
+}
+
+        ---- Content End ----
+        [File] pluginCategories.js
+        ---- Content Start ----
+        // js/modules/pluginCategories.js
+
+export const categories = {
+    "january": [
+        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image', 'StopBar Minigame',
+        'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table',
+        'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)',
+        'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window',
+        'Equipment Sets System', 'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker'
+    ],
+    "february": ['Pressing Minigame', 'Dynamic Online Shop'],
+    "march": ['Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame'],
+    "april": ['Basic Downloader'],
+    "may": ['Sequence Minigame', 'Character Fears'],
+    "bundle1": [
+        'Classic Gamepads Extensor', 'CircleBarMZ', 'SlidersMZ', 'Fake 3D Image', 'StopBar Minigame'
+    ],
+    "bundle2": [
+        'OnlineTextMZ', 'DurabilityMZ', 'Command Console', 'Dynamic Switches', 'Crafting Table'
+    ],
+    "bundle3": [
+        'Items Search Filtering', 'Conditional Party', 'SYNCRO', 'ItemDex', 'Video with Subs (Subtitles)'
+    ],
+    "bundle4": [
+        'Mistery Gift', 'Music Media Player', 'Dynamic Temperature Stats', 'Acknowledgement Window', 'Equipment Sets System'
+    ],
+    "bundle5": [
+        'SE-Extensor', 'Multi Clothes', 'Restrictor', 'Game Version Checker', 'Pressing Minigame'
+    ],
+    "bundle6": [
+        'Dynamic Online Shop', 'Expeditions', 'Itch.io Link (Itchio Integration)', 'Gacha Minigame', 'Basic Downloader'
+    ],
+    "bundle7": [
+        'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
+    ],
+    "bundle8": [
+        'Items Recycle', 'Treasure Hunt Minigame', 'Shapes Recognition', 'Visual Pathfinding', 'Gacha Minigame 2'
+    ],
+    "summer2024": [
+        ...categories.january, ...categories.february, ...categories.march, 
+        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle',
+       'Treasure Hunt Minigame', 'Shapes Recognition', 'Visual Pathfinding'
+    ],
+    "fall2024": [
+        ...categories.summer2024, 'Gacha Minigame 2'
+    ]
+};
+
+export const accumulateCategories = {
+    "january2024": categories.january,
+    "february2024": [...categories.january, ...categories.february],
+    "march2024": [...categories.january, ...categories.february, ...categories.march],
+    "april2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april],
+    "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
+    "summer2024": categories.summer2024,
+    "fall2024": categories.fall2024,
+    "bundle1": categories.bundle1,
+    "bundle2": categories.bundle2,
+    "bundle3": categories.bundle3,
+    "bundle4": categories.bundle4,
+    "bundle5": categories.bundle5,
+    "bundle6": categories.bundle6,
+    "bundle7": categories.bundle7,
+    "bundle8": categories.bundle8
+};
+
+        ---- Content End ----
+        [File] updateDashboard.js
+        ---- Content Start ----
+        // js/modules/updateDashboard.js
+
+export function updateDashboard(plugins) {
+    const tableBody = document.querySelector('#plugins tbody');
+    tableBody.innerHTML = '';
+    plugins.forEach(plugin => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><img src="${plugin.image}" alt="${plugin.title}"></td>
+            <td><a href="${plugin.link}">${plugin.title}</a></td>
+            <td>${plugin.description}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+    document.getElementById('pluginCount').textContent = `${plugins.length} plugins available`;
+}
+        ---- Content End ----
+    [File] script.js
+    ---- Content Start ----
+    // js/script.js
+
+import { fetchItchIoData } from './modules/fetchItchIoData.js';
+import { filterPlugins, filterByCategory } from './modules/filterPlugins.js';
+import { loadMenuAndHighlight, highlightActiveMenu } from './modules/menuHighlight.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetchItchIoData();
+    loadMenuAndHighlight();
+
+    window.filterPlugins = filterPlugins;
+    window.filterByCategory = filterByCategory;
+    window.highlightActiveMenu = highlightActiveMenu; 
+    window.showContent = function(sectionId) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.toggle('active', section.id === sectionId);
+        });
+    };
+
+    document.getElementById('filterBox').addEventListener('change', function() {
+        const selectedValue = this.value;
+        const availabilityContainer = document.getElementById('availabilityContainer');
+        const bundleButtonContainer = document.getElementById('bundleButtonContainer');
+        const availabilityMessage = document.getElementById('availabilityMessage');
+        const spinner = document.getElementById('spinner');
+
+        availabilityContainer.style.display = 'flex';
+        spinner.style.display = 'block';
+        availabilityMessage.textContent = 'Checking Availability...';
+        bundleButtonContainer.innerHTML = '';
+
+        if (selectedValue === 'summer2024') {
+            setTimeout(() => {
+                const currentDate = new Date();
+                const endDate = new Date('2024-09-22');
+
+                if (currentDate <= endDate) {
+                    availabilityMessage.innerHTML = `<span style="color: green;">Bundle currently available!</span> <span style="color: black;">(Available until Sunday, September 22, 2024)</span>`;
+                    bundleButtonContainer.innerHTML = `
+                        <a href="https://undermax.itch.io/summer-bundle-2024" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
+                            <i class="fas fa-gift"></i> Get This Bundle
+                        </a>
+                    `;
+                } else {
+                    availabilityMessage.innerHTML = `<span style="color: red;">Bundle no longer available</span>`;
+                    bundleButtonContainer.innerHTML = '';
+                }
+                spinner.style.display = 'none';
+            }, 570);
+        } else if (selectedValue.startsWith('bundle')) {
+            setTimeout(() => {
+                availabilityMessage.innerHTML = `<span style="color: green;">Bundle available!</span>`;
+                const bundleLinks = {
+                    'bundle1': 'https://itch.io/s/111513/plugins-bundle-1',
+                    'bundle2': 'https://itch.io/s/111514/plugins-bundle-2',
+                    'bundle3': 'https://itch.io/s/111515/plugins-bundle-3',
+                    'bundle4': 'https://itch.io/s/111516/plugins-bundle-4',
+                    'bundle5': 'https://itch.io/s/115896/plugins-bundle-5',
+                    'bundle6': 'https://itch.io/s/122444/plugins-bundle-6',
+                    'bundle7': 'https://itch.io/s/128201/plugins-bundle-7',
+                    'bundle8': 'https://itch.io/s/132802/plugins-bundle-8'  // Añadimos el enlace del Bundle 8
+                };
+                bundleButtonContainer.innerHTML = `
+                    <a href="${bundleLinks[selectedValue]}" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
+                        <i class="fas fa-gift"></i> Get This Bundle
+                    </a>
+                `;
+                spinner.style.display = 'none';
+            }, 570); 
+        } else if (['january2024', 'february2024', 'march2024', 'april2024', 'may2024'].includes(selectedValue)) {
+            // Set the message for monthly bundles that are no longer available
+            setTimeout(() => {
+                availabilityMessage.innerHTML = `<span style="color: orange;">This bundle is no longer available for purchase. If you have already purchased it and need to download it, you can do so from <a href="https://itch.io/my-collections" target="_blank" style="color: orange;">your collection</a>.</span>`;
+                bundleButtonContainer.innerHTML = '';
+                spinner.style.display = 'none';
+            }, 570); 
+        } else {
+            availabilityMessage.textContent = '';
+            spinner.style.display = 'none';
+        }
+    });
+});
+
+    ---- Content End ----
+[Folder] partials
+[Folder] undermax

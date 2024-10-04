@@ -47,33 +47,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 spinner.style.display = 'none';
             }, 570);
-        } else if (selectedValue.startsWith('bundle')) {
+        } else if (selectedValue === 'fall2024') {
             setTimeout(() => {
-                availabilityMessage.innerHTML = `<span style="color: green;">Bundle available!</span>`;
-                const bundleLinks = {
-                    'bundle1': 'https://itch.io/s/111513/plugins-bundle-1',
-                    'bundle2': 'https://itch.io/s/111514/plugins-bundle-2',
-                    'bundle3': 'https://itch.io/s/111515/plugins-bundle-3',
-                    'bundle4': 'https://itch.io/s/111516/plugins-bundle-4',
-                    'bundle5': 'https://itch.io/s/115896/plugins-bundle-5',
-                    'bundle6': 'https://itch.io/s/122444/plugins-bundle-6',
-                    'bundle7': 'https://itch.io/s/128201/plugins-bundle-7' 
+                const currentDate = new Date();
+                const endDate = new Date('2024-12-21');
 
-                };
-                bundleButtonContainer.innerHTML = `
-                    <a href="${bundleLinks[selectedValue]}" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
-                        <i class="fas fa-gift"></i> Get This Bundle
-                    </a>
-                `;
+                if (currentDate <= endDate) {
+                    availabilityMessage.innerHTML = `<span style="color: green;">Bundle currently available!</span> <span style="color: black;">(Available until Saturday, December 21, 2024)</span>`;
+                    bundleButtonContainer.innerHTML = `
+                        <a href="https://undermax.itch.io/fall-bundle-2024" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
+                            <i class="fas fa-gift"></i> Get This Bundle
+                        </a>
+                    `;
+                } else {
+                    availabilityMessage.innerHTML = `<span style="color: red;">Bundle no longer available</span>`;
+                    bundleButtonContainer.innerHTML = '';
+                }
                 spinner.style.display = 'none';
-            }, 570); 
+            }, 570);
+        } else if (selectedValue.startsWith('bundle')) {
         } else if (['january2024', 'february2024', 'march2024', 'april2024', 'may2024'].includes(selectedValue)) {
-            // Set the message for monthly bundles that are no longer available
-            setTimeout(() => {
-                availabilityMessage.innerHTML = `<span style="color: orange;">This bundle is no longer available for purchase. If you have already purchased it and need to download it, you can do so from <a href="https://itch.io/my-collections" target="_blank" style="color: orange;">your collection</a>.</span>`;
-                bundleButtonContainer.innerHTML = '';
-                spinner.style.display = 'none';
-            }, 570); 
         } else {
             availabilityMessage.textContent = '';
             spinner.style.display = 'none';

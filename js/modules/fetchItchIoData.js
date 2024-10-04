@@ -45,11 +45,11 @@ export function fetchItchIoData() {
                 if (serverStatus) {
                     serverStatus.textContent = `Connected to Undermax ${proxies[proxyIndex].name} successfully`;
                 }
-                return response.json(); // Cambiamos a JSON para allorigins.win
+                return response.json(); 
             })
             .then(data => {
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(data.contents, "text/html"); // Usamos data.contents para allorigins.win
+                const doc = parser.parseFromString(data.contents, "text/html"); 
                 const gameCells = doc.querySelectorAll('[data-game_id]');
                 
                 gameCells.forEach(game => {

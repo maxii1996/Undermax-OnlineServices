@@ -32,8 +32,21 @@ export const categories = {
     ],
     "bundle7": [
         'Sequence Minigame', 'Character Fears', 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System'
+    ],
+    "bundle8": [
+        'Items Recycle', 'Treasure Hunt Minigame', 'Shapes Recognition', 'Visual Pathfinding', 'Gacha Minigame 2'
     ]
 };
+
+categories.summer2024 = [
+    ...categories.january, ...categories.february, ...categories.march, 
+    ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle',
+    'Treasure Hunt Minigame', 'Shapes Recognition', 'Visual Pathfinding'
+];
+
+categories.fall2024 = [
+    ...categories.summer2024, 'Gacha Minigame 2'
+];
 
 export const accumulateCategories = {
     "january2024": categories.january,
@@ -41,16 +54,14 @@ export const accumulateCategories = {
     "march2024": [...categories.january, ...categories.february, ...categories.march],
     "april2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april],
     "may2024": [...categories.january, ...categories.february, ...categories.march, ...categories.april, ...categories.may],
-    "summer2024": [
-        ...categories.january, ...categories.february, ...categories.march, 
-        ...categories.april, ...categories.may, 'Alternative Graphics', 'Simon Says Minigame', 'Simple Radio System', 'Items Recycle',
-       'Treasure Hunt Minigame', 'Shapes Recognition', 'Visual Pathfinding'
-    ],
+    "summer2024": categories.summer2024,
+    "fall2024": categories.fall2024,
     "bundle1": categories.bundle1,
     "bundle2": categories.bundle2,
     "bundle3": categories.bundle3,
     "bundle4": categories.bundle4,
     "bundle5": categories.bundle5,
     "bundle6": categories.bundle6,
-    "bundle7": categories.bundle7
+    "bundle7": categories.bundle7,
+    "bundle8": categories.bundle8
 };
