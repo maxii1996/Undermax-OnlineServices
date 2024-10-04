@@ -8,20 +8,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../css/styles.css"> 
-  
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block sidebar bg-dark" id="sidebar-menu">
-                <!-- Aquí se cargará el menú -->
-            </nav>
-            <main role="main" class="col-md-10 col-lg-10 px-md-4 main-content">
+
+    <!-- Menú superior fijo -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+        <div class="container-fluid">
+            <!-- Botón de regresar a Itch.io -->
+            <a class="navbar-brand return-to-itchio" href="https://itch.io">
+                <i class="fas fa-arrow-left"></i> Return to Itch.io
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Plugins List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="LicenceTerms.html">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="support.html">Support</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container-fluid main-content">
+        <div class="row justify-content-center">
+            <main role="main" class="col-10 px-md-4 plugin-window">
                 <div class="content-section active animate__animated animate__fadeIn">
                     <h2 class="mt-4"><i class="fas fa-life-ring"></i> Help Center</h2>
                     <div class="support-text">
                         <p class="lead">Do you need support with our plugins?</p>
-                        <p>We know that things don't always go as expected, and Undermax really wants you to have a good experience. That's why we're providing you with a list of tips and advice to see if we can help:</p>
+                        <p>Things don't always go as expected, and Undermax really wants you to have a good experience. That's why we're providing you with a list of tips and advice to see if we can help:</p>
                         
                         <div class="accordion" id="supportAccordion">
                             <div class="card">
@@ -125,7 +149,7 @@
                                 </div>
                                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#supportAccordion">
                                     <div class="card-body">
-                                        Yes, we have updated the system and now it is much easier to see! You can do it from the <a href="../index.html">"Plugin List"</a> page. Use the Filter to choose which Bundle you want to view, and all the plugins corresponding to that bundle will be filtered and included.
+                                        Yes, we have updated the system and now it is much easier to see! You can do it from the <a href="index.html">"Plugin List"</a> page. Use the Filter to choose which Bundle you want to view, and all the plugins corresponding to that bundle will be filtered and included.
                                     </div>
                                 </div>                                
                             </div>
@@ -145,17 +169,10 @@
             </main>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script type="module" src="../js/script.js"></script>
-    <script>
-        fetch('../partials/menu.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('sidebar-menu').innerHTML = data;
-                highlightActiveMenu(); 
-            });
-    </script>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>

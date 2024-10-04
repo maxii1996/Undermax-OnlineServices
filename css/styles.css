@@ -10,6 +10,7 @@ body {
     flex-direction: column;
 }
 
+
 .table .thead-dark th {
     background: linear-gradient(180deg, #121538fa, #0a083094);
 }
@@ -182,4 +183,35 @@ body {
 
 .main-content {
     padding: 5em;
+}
+
+.card{
+
+    border: none;
+    border-radius: 20px;
+
+}
+
+.card-header{
+    background: linear-gradient(90deg, #ecfaffd5, #b9defff1);
+    border: none;
+    
+}
+
+h3{
+    padding: 2em;
+    background: linear-gradient(90deg, #3b457137, #0389ff26);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+
+    border-bottom-right-radius: 40px;
+}
+
+
+.card-body{
+
+    background: linear-gradient(90deg, #3b4571dd, #038affe5);
+    border: none;
+
+
 }
