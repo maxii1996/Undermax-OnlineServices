@@ -19,7 +19,7 @@ export function loadMenuAndHighlight() {
     fetch(menuPath)
         .then(response => response.text())
         .then(data => {
-            document.getElementById('sidebar-menu').innerHTML = data;
+           // document.getElementById('nav-link').innerHTML = data;
             highlightActiveMenu();
         })
         .catch(err => console.error('Failed to load menu:', err));
