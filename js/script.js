@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const endDate = new Date('2024-09-22');
 
                 if (currentDate <= endDate) {
-                    availabilityMessage.innerHTML = `<span style="color: green;">Bundle currently available!</span> <span style="color: black;">(Available until Sunday, September 22, 2024)</span>`;
+                    availabilityMessage.innerHTML = `<span style="color: #c7ffe4;">Bundle currently available!</span> <span style="color: black;">(Available until Sunday, September 22, 2024)</span>`;
                     bundleButtonContainer.innerHTML = `
                         <a href="https://undermax.itch.io/summer-bundle-2024" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
                             <i class="fas fa-gift"></i> Get This Bundle
@@ -53,14 +53,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const endDate = new Date('2024-12-21');
 
                 if (currentDate <= endDate) {
-                    availabilityMessage.innerHTML = `<span style="color: green;">Bundle currently available!</span> <span style="color: black;">(Available until Saturday, December 21, 2024)</span>`;
+                    availabilityMessage.innerHTML = `<span style="color: #c7ffe4;">Bundle currently available!</span> <span style="color: black;">(Available until Saturday, December 21, 2024)</span>`;
                     bundleButtonContainer.innerHTML = `
                         <a href="https://undermax.itch.io/fall-bundle-2024" target="_blank" class="btn btn-primary btn-lg btn-block animate__animated animate__bounceIn">
                             <i class="fas fa-gift"></i> Get This Bundle
                         </a>
                     `;
                 } else {
-                    availabilityMessage.innerHTML = `<span style="color: red;">Bundle no longer available</span>`;
+                    availabilityMessage.innerHTML = `<span style="color: #000000;">Bundle no longer available</span>`;
                     bundleButtonContainer.innerHTML = '';
                 }
                 spinner.style.display = 'none';

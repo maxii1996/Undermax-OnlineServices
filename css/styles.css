@@ -10,6 +10,15 @@ body {
     overflow: hidden;
 }
 
+.table .thead-dark th{
+
+    background: linear-gradient(180deg, #121538fa, #0a083094);
+
+
+}
+
+
+
 .wrapper {
     display: flex;
     height: 100%;
@@ -42,6 +51,7 @@ body {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     margin-bottom: 30px;
 }
+
 
 .sidebar {
     position: fixed;
@@ -101,7 +111,7 @@ body {
 
 .plugin-table th, .plugin-table td {
     padding: 14px 15px;
-    border-bottom: 1px solid rgba(44, 62, 80, 0.2);
+    border-bottom: 1px solid rgba(44, 62, 80, 0);
 }
 
 .plugin-table th {
