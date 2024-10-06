@@ -19,8 +19,9 @@ export function filterPlugins() {
         const filterList = accumulateCategories[filterBoxValue].map(normalize) || [];
         plugins = plugins.filter(plugin => {
             const cleanTitle = normalize(plugin.title);
-            return filterList.includes(cleanTitle) || filterList.some(name => cleanTitle.includes(name));
+            return filterList.includes(cleanTitle);
         });
+        
     }
 
     updateDashboard(plugins);
