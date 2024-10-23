@@ -8,7 +8,7 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-const baseDir = 'C:/Users/maxin/OneDrive/Undermax-OnlineServicesGit/Undermax-OnlineServices'; // Cambia la ruta si es necesario
+const baseDir = 'C:/Users/maxin/OneDrive/Undermax-OnlineServicesGit/Undermax-OnlineServices';
 const outputFile = 'project_structure.txt'; // El archivo de salida
 
 function readDirectory(dirPath, extensions, level = 0) {
@@ -20,10 +20,9 @@ function readDirectory(dirPath, extensions, level = 0) {
         const stats = fs.statSync(fullPath);
 
         if (file === '.git' || file === 'project_structure.txt') {
-            return; // Salta este archivo/carpeta
+            return; 
         }
 
-        // Indentar los nombres según el nivel de profundidad
         const indentation = ' '.repeat(level * 4);
 
         if (stats.isDirectory()) {
@@ -44,7 +43,6 @@ function readDirectory(dirPath, extensions, level = 0) {
     return result;
 }
 
-// Función para exportar archivos según la opción seleccionada
 function exportProject(option) {
     let extensions = [];
 
@@ -74,7 +72,6 @@ function exportProject(option) {
     rl.close();
 }
 
-// Preguntar al usuario qué tipo de archivos desea exportar
 rl.question('Elige una opción para exportar:\n1. Exportar todo\n2. Solo HTML\n3. Solo JS\n4. Solo CSS\nTu elección: ', (option) => {
     exportProject(option);
 });

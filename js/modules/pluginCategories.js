@@ -45,7 +45,7 @@ categories.summer2024 = [
 ];
 
 categories.fall2024 = [
-    ...categories.summer2024, 'Gacha Minigame 2'
+    ...categories.summer2024, 'Gacha Minigame 2', 'Equipment Evolution'
 ];
 
 export const accumulateCategories = {
