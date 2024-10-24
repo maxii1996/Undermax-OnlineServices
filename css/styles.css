@@ -45,7 +45,6 @@ body {
     flex: 1;
     padding: 20px;
     background: rgba(43, 38, 112, 0.432);
-    backdrop-filter: blur(20px);
     border-radius: 0px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.185);
     overflow-y: auto;
@@ -113,7 +112,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     background: linear-gradient(90deg, #5d8cc9e7, #0c306e22);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(4px);
     border-radius: 12px;
     color: rgba(255, 255, 255, 0.738);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -197,7 +196,6 @@ body {
 
 .custom-navbar {
     background: linear-gradient(145deg, rgba(24, 91, 216, 0.429), rgba(52, 133, 240, 0.412));
-    backdrop-filter: blur(20px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     z-index: 1;
     position: fixed;
